@@ -7,9 +7,9 @@ login menu pops up
 
 # TO DO LIST
 Dan:
-- Create black and white tile
-- Create one test piece
-- Find 2 people at once solution
+- Create black and white tile /
+- Create one test piece /
+- Find 2 people at once solution / (https://teletype.atom.io/)
 
 Jo:
 - Install react
