@@ -1,0 +1,36 @@
+.chessboard1{
+  margin: 50px;
+}
+
+.chessboard2{
+  margin: 50px;
+  width: 200px;
+  height:200px;
+  border-style:solid;
+  text-align:center;
+}
+
+.chessboard2>div{
+  height:25%;
+}
+
+.chessboard2>div>div{
+  width:25%; height:100%;
+  display:inline-block;
+  vertical-align:top;
+}
+
+.chessboard2>div:nth-child(odd)>div:nth-child(even),
+.chessboard2>div:nth-child(even)>div:nth-child(odd){
+  background-color:sienna;
+ }
+ .chessboard2>div:nth-child(even)>div:nth-child(even),
+ .chessboard2>div:nth-child(odd)>div:nth-child(odd){
+   background-color:wheat;
+}
+
+img {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
