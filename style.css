@@ -1,35 +1,38 @@
-.chessboard1{
-  margin: 50px;
+h1{
+  text-align: center;
+  font-family: sans-serif;
+  font-style: italic;
 }
-
-.chessboard2{
-  margin: 50px;
-  width: 200px;
-  height:200px;
+.chessboard{
+  margin-left: auto;
+  margin-right: auto;
+  width: 600px;
+  height:600px;
   border-style:solid;
   text-align:center;
 }
 
-.chessboard2>div{
-  height:50px;
+.chessboard>div{
+  height:12.5%;
 }
 
-.chessboard2>div>div{
-  width:50px; height:100%;
+.chessboard>div>div{
+  width:12.5%; height:100%;
   display:inline-block;
   vertical-align:top;
 }
 
-.chessboard2>div:nth-child(odd)>div:nth-child(even),
-.chessboard2>div:nth-child(even)>div:nth-child(odd){
-  background-color:sienna;
+.chessboard>div:nth-child(odd)>div:nth-child(even),
+.chessboard>div:nth-child(even)>div:nth-child(odd){
+  background-image: url(images/blackSquare.png);
  }
- .chessboard2>div:nth-child(even)>div:nth-child(even),
- .chessboard2>div:nth-child(odd)>div:nth-child(odd){
-   background-color:burlywood;
+ .chessboard>div:nth-child(even)>div:nth-child(even),
+ .chessboard>div:nth-child(odd)>div:nth-child(odd){
+   background-image: url(images/whiteSquare.png);
 }
 
 img {
+  height: 95%;
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
