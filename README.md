@@ -7,10 +7,8 @@ login menu pops up
 
 # TO DO LIST
 Dan:
-- Create black and white tile /
-- Create one test piece /
-- Find 2 people at once solution / (https://teletype.atom.io/)
+- research "chest notion"
+- try and implement it into App.js and see how far you get
 
 Jo:
-- Install react
-- Install atom
+- Checkout React prettier
