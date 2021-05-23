@@ -1,13 +1,43 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+body{
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+h1{
+  text-align: center;
+  font-family: sans-serif;
+  font-style: italic;
+}
+.chessboard{
+  margin-left: auto;
+  margin-right: auto;
+  width: 600px;
+  height:600px;
+  border-style:solid;
+  text-align:center;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.chessboard>div{
+  height:12.5%;
+}
+
+.chessboard>div>div{
+  width:12.5%; height:100%;
+  display:inline-block;
+  vertical-align:top;
+  background-repeat: no-repeat;
+  background-size:cover;
+}
+
+.chessboard>div:nth-child(odd)>div:nth-child(even),
+.chessboard>div:nth-child(even)>div:nth-child(odd){
+  background: Bisque !important;
+ }
+ .chessboard>div:nth-child(even)>div:nth-child(even),
+ .chessboard>div:nth-child(odd)>div:nth-child(odd){
+   background: Chocolate !important;
+}
+
+img {
+  height: 95%;
 }

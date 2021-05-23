@@ -1,23 +1,56 @@
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
+  function iterateRows(row) {
+    row.forEach(iteratePieces)
+  }
+
+  function iteratePieces(piece) {
+    console.log(piece)
+  }
+
+  function iterateBoard(board) {
+    board.forEach(iterateRows)
+  }
+
+  let board = [
+    [0, 1, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 1, 0, 0]
+  ];
+
+  iterateBoard(board);
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Chess Board!</h1>
+      <div class="chessboard">
+        <div>
+            <div></div><div></div><div></div><div></div><div><img src="/images/blackRook.png" alt=""/></div><div></div><div></div><div></div>
+        </div>
+        <div>
+            <div></div><div><img src="/images/blackQueen.png" alt=""/></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        </div>
+        <div>
+            <div></div><div></div><div></div><div></div><div></div><div></div><div><img src="/images/whitePawn.png" alt=""/></div><div></div>
+        </div>
+        <div>
+            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        </div>
+        <div>
+            <div></div><div></div><div><img src="/images/whiteBishop.png" alt=""/></div><div></div><div></div><div></div><div></div><div></div>
+        </div>
+        <div>
+            <div></div><div></div><div><img src="/images/whiteKing.png" alt=""/></div><div></div><div></div><div><img src="/images/blackKnight.png" alt=""/></div><div></div><div></div>
+        </div>
+        <div>
+            <div><img src="/images/whiteRook.png" alt=""/></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        </div>
+        <div>
+            <div></div><div></div><div></div><div><img src="/images/blackKing.png" alt=""/></div><div></div><div></div><div></div><div></div>
+        </div>
+      </div>
     </div>
   );
 }
