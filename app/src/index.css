@@ -2,12 +2,17 @@ body{
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
-}
-h1{
   text-align: center;
   font-family: sans-serif;
+}
+h1{
   font-style: italic;
 }
+
+p{
+  font-size: large;
+}
+
 .chessboard{
   margin-left: auto;
   margin-right: auto;
@@ -31,7 +36,7 @@ h1{
 
 .chessboard>div:nth-child(odd)>div:nth-child(even),
 .chessboard>div:nth-child(even)>div:nth-child(odd){
-  background: Bisque !important;
+  background: SandyBrown !important;
  }
  .chessboard>div:nth-child(even)>div:nth-child(even),
  .chessboard>div:nth-child(odd)>div:nth-child(odd){

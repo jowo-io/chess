@@ -1,19 +1,33 @@
 import './App.css';
-import blackRook from './assets/blackRook.png'
+import IMAGES from './assets/index.js'
+import splitBoard from './fenConverter.js'
+
+let fenCode = 'rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R'
+let board=splitBoard(fenCode)
 
 const pieceTypes = {
-  BLACK_ROOK: 1,
+  'r': IMAGES.blackRook,
+  'n': IMAGES.blackKnight,
+  'b': IMAGES.blackBishop,
+  'q': IMAGES.blackQueen,
+  'k': IMAGES.blackKing,
+  'p': IMAGES.blackPawn,
+  'R': IMAGES.whiteRook,
+  'N': IMAGES.whiteKnight,
+  'B': IMAGES.whiteBishop,
+  'Q': IMAGES.whiteQueen,
+  'K': IMAGES.whiteKing,
+  'P': IMAGES.whitePawn,
 };
 
+//Functions for displaying board
 function renderPiece(piece) {
-  switch(piece){
-    case pieceTypes.BLACK_ROOK:
-      return (
-        <img src={blackRook} alt="Black Rook" />
-      );
-  }
+        if (piece !== 0){
+          return (
+            <img src={pieceTypes[piece]} alt="" />
+          )
+        }
 }
-
 function iteratePieces(piece) {
   return (
     <div>
@@ -21,7 +35,6 @@ function iteratePieces(piece) {
     </div>
   );
 }
-
 function iterateRows(row) {
   return (
     <div>
@@ -29,21 +42,9 @@ function iterateRows(row) {
     </div>
   );
 }
-
 function iterateBoard(board) {
   return board.map(iterateRows)
 }
-
-let board = [
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 1, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 1, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-];
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
       <div class="chessboard">
         {iterateBoard(board)}
       </div>
+      <p>FEN code is {fenCode}</p>
     </div>
   );
 }
