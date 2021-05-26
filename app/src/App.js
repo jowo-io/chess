@@ -4,7 +4,7 @@ import IMAGES from "./assets/index.js";
 import { fenCodeToBoard, boardToFenCode } from "./fenConverter.js";
 
 //let fenCode = "8/8/8/8/8/8/8/8";
-let fenCode = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+let fenCode = "rnbqkbnr/pppppppp/8/8/6P1/7P/PPPPPP2/RNBQKBNR";
 // let board = fenCodeToBoard(fenCode);
 // console.log(board);
 
@@ -43,10 +43,10 @@ function App() {
   function iterateRows(row, rowIndex) {
     function iterateColumns(piece, columnIndex) {
       function clickSquare(event) {
-        if (piece === 0) {
+        if (piece !== null) {
+          //^this if statement determines which pieces can be taken.
           if (activePiece !== null) {
             setBoard(updateBoard(board, activePiece, rowIndex, columnIndex));
-            console.log(board);
           }
         }
         //if square clicked is active piece deselect square
@@ -85,7 +85,7 @@ function App() {
     <div className="App">
       <h1>Chess Board! {activePiece}</h1>
       <div className="chessboard">{iterateBoard(board)}</div>
-      <p>FEN code is {board} w KQkq</p>
+      <p>FEN code is {boardToFenCode(board)} w KQkq</p>
     </div>
   );
 }
