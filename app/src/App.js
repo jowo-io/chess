@@ -24,9 +24,10 @@ const pieceTypes = {
 };
 
 function updateBoard(board, activePiece, rowIndex, columnIndex) {
-  const newBoard = board;
-  console.log(activePiece[0], activePiece[1], rowIndex, columnIndex);
-  for (let i in board) return newBoard;
+  let movedPiece = board[activePiece[0]][activePiece[1]];
+  board[activePiece[0]][activePiece[1]] = 0;
+  board[rowIndex][columnIndex] = movedPiece;
+  return board;
 }
 
 function App() {
@@ -48,7 +49,7 @@ function App() {
           }
           return;
         }
-
+        //if square clicked is active piece deselect square
         if (
           activePiece !== null &&
           rowIndex === activePiece[0] &&
@@ -56,6 +57,7 @@ function App() {
         ) {
           setActivePiece(null);
         } else {
+          //set active square
           setActivePiece([rowIndex, columnIndex]);
         }
       }
@@ -83,7 +85,7 @@ function App() {
     <div className="App">
       <h1>Chess Board! {activePiece}</h1>
       <div className="chessboard">{iterateBoard(board)}</div>
-      <p>FEN code is {fenCode} w KQkq</p>
+      <p>FEN code is {boardToFenCode(board)} w KQkq</p>
     </div>
   );
 }

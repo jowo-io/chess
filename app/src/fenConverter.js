@@ -18,5 +18,9 @@ export function fenCodeToBoard(fen) {
 }
 
 export function boardToFenCode(board) {
+  let fen = "";
+  for (let i in board) {
+    fen.concat("/");
+  }
   return "hello";
 }
