@@ -83,9 +83,9 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Chess Board! {activePiece}</h1>
+      <h1>Chess Board!</h1>
       <div className="chessboard">{iterateBoard(board)}</div>
-      <p>FEN code is {boardToFenCode(board)} w KQkq</p>
+      <p>FEN code is {boardToFenCode(board)}</p>
     </div>
   );
 }
