@@ -1,16 +1,15 @@
-function splitBoard(fen) {
-  let fen2 = fen.split('/')
-  console.log(fen2)
+function fenCodeToBoard(fen) {
+  let fenRows = fen.split('/')
   let board = []
-  for(const i in fen2){
+  for(let i in fenRows){
     let row=[]
-    for(const j in fen2[i]){
-      if (!isNaN(fen2[i][j])) {
-        for (let step = 0; step < fen2[i][j]; step++){
+    for(let j in fenRows[i]){
+      if (!isNaN(fenRows[i][j])) {
+        for (let step = 0; step < fenRows[i][j]; step++){
           row.push(0)
         }
       } else {
-        row.push(fen2[i][j])
+        row.push(fenRows[i][j])
       }
     }
     board.push(row)
@@ -18,4 +17,4 @@ function splitBoard(fen) {
   return(board)
 }
 
-export default splitBoard
+export default fenCodeToBoard

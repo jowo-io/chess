@@ -1,9 +1,9 @@
 import './App.css';
 import IMAGES from './assets/index.js'
-import splitBoard from './fenConverter.js'
+import fenCodeToBoard from './fenConverter.js'
 
-let fenCode = 'rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R'
-let board=splitBoard(fenCode)
+let fenCode = '3b4/R3P3/2kPR1n1/P1p1n3/4K1p1/2Nr4/5p2/1b6'
+let board=fenCodeToBoard(fenCode)
 
 const pieceTypes = {
   'r': IMAGES.blackRook,
@@ -53,7 +53,7 @@ function App() {
       <div class="chessboard">
         {iterateBoard(board)}
       </div>
-      <p>FEN code is {fenCode}</p>
+      <p>FEN code is {fenCode} w KQkq</p>
     </div>
   );
 }
