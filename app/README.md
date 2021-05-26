@@ -2,6 +2,8 @@
 
 run `npm install`
 
+also ensure you have [prettier](https://atom.io/packages/prettier-atom) installed
+
 # development
 
 run `npm run start` and open [localhost:3000](http://localhost:3000
