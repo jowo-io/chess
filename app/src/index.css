@@ -1,46 +1,50 @@
-body{
+body {
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
   text-align: center;
   font-family: sans-serif;
 }
-h1{
+h1 {
   font-style: italic;
 }
 
-p{
+p {
   font-size: large;
 }
 
-.chessboard{
+.chessboard {
   margin-left: auto;
   margin-right: auto;
-  width: 600px;
-  height:600px;
-  border-style:solid;
-  text-align:center;
+  display: inline-block;
+  border-style: solid;
+  text-align: center;
 }
 
-.chessboard>div{
-  height:12.5%;
+.chessboard > div {
+  height: 70px;
 }
 
-.chessboard>div>div{
-  width:12.5%; height:100%;
-  display:inline-block;
-  vertical-align:top;
+.chessboard > div > div {
+  width: 70px;
+  height: 100%;
+  display: inline-block;
+  vertical-align: top;
   background-repeat: no-repeat;
-  background-size:cover;
+  background-size: cover;
 }
 
-.chessboard>div:nth-child(odd)>div:nth-child(even),
-.chessboard>div:nth-child(even)>div:nth-child(odd){
+.chessboard > div > div.selectedSquare {
+  opacity: 0.2;
+}
+
+.chessboard > div:nth-child(odd) > div:nth-child(even),
+.chessboard > div:nth-child(even) > div:nth-child(odd) {
   background: SandyBrown !important;
- }
- .chessboard>div:nth-child(even)>div:nth-child(even),
- .chessboard>div:nth-child(odd)>div:nth-child(odd){
-   background: Chocolate !important;
+}
+.chessboard > div:nth-child(even) > div:nth-child(even),
+.chessboard > div:nth-child(odd) > div:nth-child(odd) {
+  background: Chocolate !important;
 }
 
 img {
