@@ -46,8 +46,8 @@ function App() {
         if (piece === 0) {
           if (activePiece !== null) {
             setBoard(updateBoard(board, activePiece, rowIndex, columnIndex));
+            console.log(board);
           }
-          return;
         }
         //if square clicked is active piece deselect square
         if (
@@ -85,7 +85,7 @@ function App() {
     <div className="App">
       <h1>Chess Board! {activePiece}</h1>
       <div className="chessboard">{iterateBoard(board)}</div>
-      <p>FEN code is {boardToFenCode(board)} w KQkq</p>
+      <p>FEN code is {board} w KQkq</p>
     </div>
   );
 }
