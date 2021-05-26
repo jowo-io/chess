@@ -44,7 +44,7 @@ function App() {
     function iterateColumns(piece, columnIndex) {
       function clickSquare(event) {
         if (piece !== null) {
-          //^this if statement determines which pieces can be taken.
+          //^this if statement determines which squares selected piece can be moved too.
           if (activePiece !== null) {
             setBoard(updateBoard(board, activePiece, rowIndex, columnIndex));
           }
@@ -56,8 +56,8 @@ function App() {
           columnIndex === activePiece[1]
         ) {
           setActivePiece(null);
-        } else {
-          //set active square
+        } else if (activePiece !== null || piece !== 0) {
+          //set active square ^ if statement means first select cannot be empty square
           setActivePiece([rowIndex, columnIndex]);
         }
       }
