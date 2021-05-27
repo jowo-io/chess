@@ -4,7 +4,7 @@ import IMAGES from "./assets/index.js";
 import { fenCodeToBoard, boardToFenCode } from "./fenConverter.js";
 
 //let fenCode = "8/8/8/8/8/8/8/8";
-let fenCode = "rnbqkbnr/pppppppp/8/8/6P1/7P/PPPPPP2/RNBQKBNR";
+let fenCode = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
 // let board = fenCodeToBoard(fenCode);
 // console.log(board);
 
@@ -30,9 +30,18 @@ function updateBoard(board, activePiece, rowIndex, columnIndex) {
   return board;
 }
 
+function changeTurn(turn) {
+  if (turn === "White") {
+    return "Black";
+  } else {
+    return "White";
+  }
+}
+
 function App() {
   const [activePiece, setActivePiece] = useState(null);
   const [board, setBoard] = useState(fenCodeToBoard(fenCode));
+  const [turn, setTurn] = useState("White");
 
   //Functions for displaying board
   function renderPiece(piece) {
@@ -43,21 +52,25 @@ function App() {
   function iterateRows(row, rowIndex) {
     function iterateColumns(piece, columnIndex) {
       function clickSquare(event) {
-        if (piece !== null) {
-          //^this if statement determines which squares selected piece can be moved too.
-          if (activePiece !== null) {
-            setBoard(updateBoard(board, activePiece, rowIndex, columnIndex));
-          }
+        //
+        if (
+          piece !== null &&
+          activePiece !== null &&
+          (rowIndex !== activePiece[0] || columnIndex !== activePiece[1])
+        ) {
+          setBoard(updateBoard(board, activePiece, rowIndex, columnIndex));
+          setTurn(changeTurn(turn));
+          setActivePiece(null); //this doesn't work here for some reason
         }
-        //if square clicked is active piece deselect square
+        //deselect square
         if (
           activePiece !== null &&
           rowIndex === activePiece[0] &&
           columnIndex === activePiece[1]
         ) {
           setActivePiece(null);
+          //sets active square
         } else if (activePiece !== null || piece !== 0) {
-          //set active square ^ if statement means first select cannot be empty square
           setActivePiece([rowIndex, columnIndex]);
         }
       }
@@ -83,7 +96,8 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Chess Board!</h1>
+      <h1>Chess Board</h1>
+      <p>{turn} to move </p>
       <div className="chessboard">{iterateBoard(board)}</div>
       <p>FEN code is {boardToFenCode(board)}</p>
     </div>
