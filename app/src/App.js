@@ -4,7 +4,8 @@ import IMAGES from "./assets/index.js";
 import { fenCodeToBoard, boardToFenCode } from "./fenConverter.js";
 
 //let fenCode = "8/8/8/8/8/8/8/8";
-let fenCode = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+let fenCode =
+  "rnmgbraqkcjbgmnr/pppppppppppppppp/16/16/16/16/16/16/16/16/16/RNMGBRAQKCJBGMNR/PPPPPPPPPPPPPPPP";
 // let board = fenCodeToBoard(fenCode);
 // console.log(board);
 
@@ -15,12 +16,24 @@ const pieceTypes = {
   q: IMAGES.blackQueen,
   k: IMAGES.blackKing,
   p: IMAGES.blackPawn,
+  m: IMAGES.blackMoon,
+  g: IMAGES.blackGrave,
+  j: IMAGES.blackJester,
+  a: IMAGES.blackArchbishop,
+  c: IMAGES.blackChancellor,
+  o: IMAGES.blackRose,
   R: IMAGES.whiteRook,
   N: IMAGES.whiteKnight,
   B: IMAGES.whiteBishop,
   Q: IMAGES.whiteQueen,
   K: IMAGES.whiteKing,
   P: IMAGES.whitePawn,
+  M: IMAGES.whiteMoon,
+  G: IMAGES.whiteGrave,
+  J: IMAGES.whiteJester,
+  A: IMAGES.whiteArchbishop,
+  C: IMAGES.whiteChancellor,
+  O: IMAGES.whiteRose,
 };
 
 function updateBoard(board, activePiece, rowIndex, columnIndex) {
@@ -51,6 +64,9 @@ function App() {
   }
   function iterateRows(row, rowIndex) {
     function iterateColumns(piece, columnIndex) {
+      function dragSquare(event) {
+        console.log("dragged");
+      }
       function clickSquare(event) {
         //
         if (
@@ -69,8 +85,14 @@ function App() {
           columnIndex === activePiece[1]
         ) {
           setActivePiece(null);
-          //sets active square
-        } else if (activePiece !== null || piece !== 0) {
+          //displays active square
+        } else if (
+          //sets active square, if piece is correct color and not empty
+          ((activePiece !== null || piece !== 0) &&
+            turn === "White" &&
+            piece === piece.toString().toUpperCase()) ||
+          (turn === "Black" && piece === piece.toString().toLowerCase())
+        ) {
           setActivePiece([rowIndex, columnIndex]);
         }
       }
@@ -83,7 +105,11 @@ function App() {
         selectedClass = "selectedSquare";
       }
       return (
-        <div className={selectedClass} onClick={clickSquare}>
+        <div
+          className={selectedClass}
+          onClick={clickSquare}
+          ondragstart={dragSquare}
+        >
           {renderPiece(piece, rowIndex, columnIndex)}
         </div>
       );
