@@ -1,19 +1,32 @@
 export function fenCodeToBoard(fen) {
   let fenRows = fen.split("/");
   let board = [];
-  for (let i in fenRows) {
+  for (let i = 0; i < fenRows.length; i++) {
     let row = [];
-    for (let j in fenRows[i]) {
+    var countNumber = "";
+    for (let j = 0; j < fenRows[i].length; j++) {
       if (!isNaN(fenRows[i][j])) {
-        for (let step = 0; step < fenRows[i][j]; step++) {
-          row.push(0);
-        }
+        countNumber += fenRows[i][j];
       } else {
+        console.log(countNumber);
+        if (countNumber !== "") {
+          for (let k = 0; k < parseInt(countNumber); k++) {
+            console.log("?");
+            row.push(0);
+          }
+        }
         row.push(fenRows[i][j]);
+      }
+    }
+    if (countNumber !== "") {
+      for (let k = 0; k < parseInt(countNumber); k++) {
+        console.log("?");
+        row.push(0);
       }
     }
     board.push(row);
   }
+  console.log(board);
   return board;
 }
 

@@ -3,9 +3,9 @@ import "./App.css";
 import IMAGES from "./assets/index.js";
 import { fenCodeToBoard, boardToFenCode } from "./fenConverter.js";
 
-//let fenCode = "8/8/8/8/8/8/8/8";
+//let fenCode = "mgjaco2/p7/8/8/8/8/7P/2MGJACO";
 let fenCode =
-  "rnmgbraqkcjbgmnr/pppppppppppppppp/16/16/16/16/16/16/16/16/16/RNMGBRAQKCJBGMNR/PPPPPPPPPPPPPPPP";
+  "rnmgbraqkcjbgmnr/pppppppppppppppp/16/16/16/16/16/16/16/16/16/16/16/16/RNMGBRAQKCJBGMNR/PPPPPPPPPPPPPPPP";
 // let board = fenCodeToBoard(fenCode);
 // console.log(board);
 
@@ -126,6 +126,7 @@ function App() {
       <p>{turn} to move </p>
       <div className="chessboard">{iterateBoard(board)}</div>
       <p>FEN code is {boardToFenCode(board)}</p>
+      <img src=".assets/blackMoon.png" alt="" />
     </div>
   );
 }
