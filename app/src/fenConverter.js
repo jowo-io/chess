@@ -8,10 +8,8 @@ export function fenCodeToBoard(fen) {
       if (!isNaN(fenRows[i][j])) {
         countNumber += fenRows[i][j];
       } else {
-        console.log(countNumber);
         if (countNumber !== "") {
           for (let k = 0; k < parseInt(countNumber); k++) {
-            console.log("?");
             row.push(0);
           }
         }
@@ -20,13 +18,11 @@ export function fenCodeToBoard(fen) {
     }
     if (countNumber !== "") {
       for (let k = 0; k < parseInt(countNumber); k++) {
-        console.log("?");
         row.push(0);
       }
     }
     board.push(row);
   }
-  console.log(board);
   return board;
 }
 

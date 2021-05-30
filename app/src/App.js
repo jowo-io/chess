@@ -3,11 +3,9 @@ import "./App.css";
 import IMAGES from "./assets/index.js";
 import { fenCodeToBoard, boardToFenCode } from "./fenConverter.js";
 
-//let fenCode = "mgjaco2/p7/8/8/8/8/7P/2MGJACO";
+//let fenCode = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
 let fenCode =
-  "rnmgbraqkcjbgmnr/pppppppppppppppp/16/16/16/16/16/16/16/16/16/16/16/16/RNMGBRAQKCJBGMNR/PPPPPPPPPPPPPPPP";
-// let board = fenCodeToBoard(fenCode);
-// console.log(board);
+  "rnmgboaqkcjbgmnr/pppppppppppppppp/16/16/16/16/16/16/16/16/16/16/16/16/PPPPPPPPPPPPPPPP/RNMGBOAQKCJBGMNR";
 
 const pieceTypes = {
   r: IMAGES.blackRook,
