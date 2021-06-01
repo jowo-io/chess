@@ -1,4 +1,4 @@
-export function fenCodeToBoard(fen) {
+export function fenToBoard(fen) {
   let fenRows = fen.split("/");
   let board = [];
   for (let i = 0; i < fenRows.length; i++) {
@@ -26,7 +26,7 @@ export function fenCodeToBoard(fen) {
   return board;
 }
 
-export function boardToFenCode(board) {
+export function boardToFen(board) {
   var fen = "";
   var count = 0;
   for (let i in board) {

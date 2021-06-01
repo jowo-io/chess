@@ -1,13 +1,12 @@
-import { useState } from "react";
 import "./App.css";
+import { useState } from "react";
 import IMAGES from "./assets/index.js";
-import { fenCodeToBoard, boardToFenCode } from "./fenConverter.js";
+import { fenToBoard, boardToFen } from "./fenCodeHandler.js";
+import genLegalSquareArray from "./pieceLogic/genLegalSquares";
 
-//let fenCode = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
-let fenCode =
-  "rnmgboaqkcjbgmnr/pppppppppppppppp/16/16/16/16/16/16/16/16/16/16/16/16/PPPPPPPPPPPPPPPP/RNMGBOAQKCJBGMNR";
+let fenCode = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
 
-const pieceTypes = {
+const PIECE_TYPES = {
   r: IMAGES.blackRook,
   n: IMAGES.blackKnight,
   b: IMAGES.blackBishop,
@@ -34,11 +33,29 @@ const pieceTypes = {
   O: IMAGES.whiteRose,
 };
 
-function updateBoard(board, activePiece, rowIndex, columnIndex) {
-  let movedPiece = board[activePiece[0]][activePiece[1]];
-  board[activePiece[0]][activePiece[1]] = 0;
-  board[rowIndex][columnIndex] = movedPiece;
-  return board;
+function renderPiece(currentPiece) {
+  if (currentPiece !== 0) {
+    return <img src={PIECE_TYPES[currentPiece]} alt="" />;
+  }
+}
+
+function checkSquareMatch(row, col, square) {
+  if (row === square[0] && col === square[1]) {
+    return true;
+  }
+  return false;
+}
+
+function changeBoardArray(
+  boardArray,
+  selectedSquare,
+  currentRow,
+  currentColumn
+) {
+  const movedPiece = boardArray[selectedSquare[0]][selectedSquare[1]];
+  boardArray[selectedSquare[0]][selectedSquare[1]] = 0;
+  boardArray[currentRow][currentColumn] = movedPiece;
+  return boardArray;
 }
 
 function changeTurn(turn) {
@@ -49,82 +66,96 @@ function changeTurn(turn) {
   }
 }
 
-function App() {
-  const [activePiece, setActivePiece] = useState(null);
-  const [board, setBoard] = useState(fenCodeToBoard(fenCode));
-  const [turn, setTurn] = useState("White");
-
-  //Functions for displaying board
-  function renderPiece(piece) {
-    if (piece !== 0) {
-      return <img src={pieceTypes[piece]} alt="" />;
-    }
+function genEnPassantArray(boardArray) {
+  let enPassantArray = [[], []];
+  for (let i = 0; i < boardArray[0].length; i++) {
+    enPassantArray[0].push(0);
+    enPassantArray[1].push(0);
   }
-  function iterateRows(row, rowIndex) {
-    function iterateColumns(piece, columnIndex) {
-      function dragSquare(event) {
-        console.log("dragged");
-      }
+  return enPassantArray;
+}
+
+function App() {
+  const [boardArray, setBoardArray] = useState(fenToBoard(fenCode));
+  const [castlingArray, setCastlingArray] = useState([true, true, true, true]);
+  const [enPassantArray, setEnPassantArray] = useState(
+    genEnPassantArray(boardArray)
+  );
+  const [turn, setTurn] = useState("White");
+  const [selectedSquare, setSelectedSquare] = useState(null);
+  const [legalSquareArray, setLegalSquareArray] = useState([]);
+
+  function genBoard(boardArray) {
+    return boardArray.map(iterateRows);
+  }
+
+  function iterateRows(row, currentRow) {
+    function iterateColumns(currentPiece, currentColumn) {
       function clickSquare(event) {
-        //
+        // on click square, either select correct coloured piece, deselct piece, or move piece to legal square
+        //select piece
         if (
-          piece !== null &&
-          activePiece !== null &&
-          (rowIndex !== activePiece[0] || columnIndex !== activePiece[1])
+          selectedSquare === null &&
+          ((turn === "White" &&
+            currentPiece === currentPiece.toString().toUpperCase()) ||
+            (turn === "Black" &&
+              currentPiece === currentPiece.toString().toLowerCase()))
         ) {
-          setBoard(updateBoard(board, activePiece, rowIndex, columnIndex));
-          setTurn(changeTurn(turn));
-          setActivePiece(null); //this doesn't work here for some reason
-        }
-        //deselect square
-        if (
-          activePiece !== null &&
-          rowIndex === activePiece[0] &&
-          columnIndex === activePiece[1]
-        ) {
-          setActivePiece(null);
-          //displays active square
-        } else if (
-          //sets active square, if piece is correct color and not empty
-          ((activePiece !== null || piece !== 0) &&
-            turn === "White" &&
-            piece === piece.toString().toUpperCase()) ||
-          (turn === "Black" && piece === piece.toString().toLowerCase())
-        ) {
-          setActivePiece([rowIndex, columnIndex]);
+          setSelectedSquare([currentRow, currentColumn]);
+          setLegalSquareArray(genLegalSquareArray());
+        } else if (selectedSquare !== null) {
+          //deselct piece
+          if (checkSquareMatch(currentRow, currentColumn, selectedSquare)) {
+            setSelectedSquare(null);
+          }
+          //move piece
+          if (
+            currentPiece !== null &&
+            legalSquareArray.find((value) =>
+              checkSquareMatch(currentRow, currentColumn, value)
+            )
+          ) {
+            setBoardArray(
+              changeBoardArray(
+                boardArray,
+                selectedSquare,
+                currentRow,
+                currentColumn
+              )
+            );
+            setTurn(changeTurn(turn));
+            setSelectedSquare(null);
+          }
         }
       }
-      let selectedClass = "";
-      if (
-        activePiece !== null &&
-        rowIndex === activePiece[0] &&
-        columnIndex === activePiece[1]
-      ) {
-        selectedClass = "selectedSquare";
+      //displaying active square/ legal square
+      let squareClass = "";
+      if (selectedSquare !== null) {
+        if (
+          legalSquareArray.find((value) =>
+            checkSquareMatch(currentRow, currentColumn, value)
+          )
+        ) {
+          squareClass = "legalSquare";
+        }
+        if (checkSquareMatch(currentRow, currentColumn, selectedSquare)) {
+          squareClass = "selectedSquare";
+        }
       }
+
       return (
-        <div
-          className={selectedClass}
-          onClick={clickSquare}
-          ondragstart={dragSquare}
-        >
-          {renderPiece(piece, rowIndex, columnIndex)}
+        <div className={squareClass} onClick={clickSquare}>
+          {renderPiece(currentPiece)}
         </div>
       );
     }
     return <div>{row.map(iterateColumns)}</div>;
   }
-  function iterateBoard(board) {
-    return board.map(iterateRows);
-  }
 
   return (
     <div className="App">
-      <h1>Chess Board</h1>
-      <p>{turn} to move </p>
-      <div className="chessboard">{iterateBoard(board)}</div>
-      <p>FEN code is {boardToFenCode(board)}</p>
-      <img src=".assets/blackMoon.png" alt="" />
+      <p>{turn} to move</p>
+      <div className="chessboard">{genBoard(boardArray)}</div>
     </div>
   );
 }

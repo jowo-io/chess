@@ -1,0 +1,28 @@
+const IMAGES = {
+  whiteKnight: require("./assets/whiteKnight.png").default,
+  whiteRook: require("./assets/whiteRook.png").default,
+  whiteKing: require("./assets/whiteKing.png").default,
+  whiteQueen: require("./assets/whiteQueen.png").default,
+  whiteBishop: require("./assets/whiteBishop.png").default,
+  whitePawn: require("./assets/whitePawn.png").default,
+  whiteArchbishop: require("./assets/whiteArchbishop.png").default,
+  whiteChancellor: require("./assets/whiteChancellor.png").default,
+  whiteGrave: require("./assets/whiteGrave.png").default,
+  whiteMoon: require("./assets/whiteMoon.png").default,
+  whiteRose: require("./assets/whiteRose.png").default,
+  whiteJester: require("./assets/whiteJester.png").default,
+  blackKnight: require("./assets/blackKnight.png").default,
+  blackRook: require("./assets/blackRook.png").default,
+  blackKing: require("./assets/blackKing.png").default,
+  blackQueen: require("./assets/blackQueen.png").default,
+  blackBishop: require("./assets/blackBishop.png").default,
+  blackPawn: require("./assets/blackPawn.png").default,
+  blackArchbishop: require("./assets/blackArchbishop.png").default,
+  blackChancellor: require("./assets/blackChancellor.png").default,
+  blackGrave: require("./assets/blackGrave.png").default,
+  blackMoon: require("./assets/blackMoon.png").default,
+  blackRose: require("./assets/blackRose.png").default,
+  blackJester: require("./assets/blackJester.png").default,
+};
+
+export default IMAGES;
