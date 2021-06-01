@@ -33,6 +33,48 @@ const PIECE_TYPES = {
   O: IMAGES.whiteRose,
 };
 
+let isMouseDown = false;
+let isMouseDrag = false;
+let mouseStartX = null;
+let mouseStartY = null;
+let mouseCurrentX = null;
+let mouseCurrentY = null;
+
+function checkDragOrClick() {
+  return (
+    Math.abs(mouseCurrentX - mouseStartX) > 10 &&
+    Math.abs(mouseCurrentY - mouseStartY) > 10
+  );
+}
+
+function mouseUp(event) {
+  if (isMouseDown) {
+    if (isMouseDrag) {
+      console.log("stop drag");
+    } else {
+      console.log("start clickSquare");
+    }
+  }
+  isMouseDrag = false;
+  isMouseDown = false;
+}
+
+function mouseMove(event) {
+  mouseCurrentX = event.clientX;
+  mouseCurrentY = event.clientY;
+  if (checkDragOrClick() && isMouseDown) {
+    if (!isMouseDrag) {
+      console.log("start drag");
+    }
+    isMouseDrag = true;
+  }
+}
+
+function mouseLeave(event) {
+  isMouseDrag = false;
+  isMouseDown = false;
+}
+
 function renderPiece(currentPiece) {
   if (currentPiece !== 0) {
     return <img src={PIECE_TYPES[currentPiece]} alt="" />;
@@ -91,6 +133,13 @@ function App() {
 
   function iterateRows(row, currentRow) {
     function iterateColumns(currentPiece, currentColumn) {
+      function mouseDownSquare(event) {
+        isMouseDown = true;
+        mouseStartX = event.clientX;
+        mouseStartY = event.clientY;
+        event.stopPropagation();
+        event.preventDefault();
+      }
       function clickSquare(event) {
         // on click square, either select correct coloured piece, deselct piece, or move piece to legal square
         //select piece
@@ -144,7 +193,7 @@ function App() {
       }
 
       return (
-        <div className={squareClass} onClick={clickSquare}>
+        <div className={squareClass} onMouseDown={mouseDownSquare}>
           {renderPiece(currentPiece)}
         </div>
       );
@@ -153,7 +202,12 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div
+      className="App"
+      onMouseUp={mouseUp}
+      onMouseMove={mouseMove}
+      onMouseLeave={mouseLeave}
+    >
       <p>{turn} to move</p>
       <div className="chessboard">{genBoard(boardArray)}</div>
     </div>

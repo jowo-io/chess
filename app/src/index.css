@@ -53,4 +53,5 @@ p {
 
 img {
   height: 95%;
+  user-select: none;
 }
