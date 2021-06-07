@@ -13,6 +13,11 @@ p {
   font-size: large;
 }
 
+.App {
+  background-color: grey;
+  display: inline-block;
+}
+
 .chessboard {
   margin-left: auto;
   margin-right: auto;
@@ -49,6 +54,22 @@ p {
 .chessboard > div:nth-child(even) > div:nth-child(even),
 .chessboard > div:nth-child(odd) > div:nth-child(odd) {
   background: Chocolate !important;
+}
+
+.movingPiece {
+  pointer-events: none;
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  width: 0px;
+  height: 0px;
+}
+
+.movingPiece img {
+  width: 40px;
+  height: auto;
+  margin-left: -20px;
+  margin-top: -20px;
 }
 
 img {

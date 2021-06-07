@@ -10,7 +10,9 @@ login menu pops up
 
 Dan:
 
-- Style selectedSquare
+- move castlingArray + enPassantArray
+- spec out different scanrios of selecting/dragging
+- show correct piece
 
 Jo:
 

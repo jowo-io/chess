@@ -33,8 +33,7 @@ const PIECE_TYPES = {
   O: IMAGES.whiteRose,
 };
 
-let isMouseDown = false;
-let isMouseDrag = false;
+let timeoutId = null;
 let mouseStartX = null;
 let mouseStartY = null;
 let mouseCurrentX = null;
@@ -45,40 +44,6 @@ function checkDragOrClick() {
     Math.abs(mouseCurrentX - mouseStartX) > 10 &&
     Math.abs(mouseCurrentY - mouseStartY) > 10
   );
-}
-
-function mouseUp(event) {
-  if (isMouseDown) {
-    if (isMouseDrag) {
-      console.log("stop drag");
-    } else {
-      console.log("start clickSquare");
-    }
-  }
-  isMouseDrag = false;
-  isMouseDown = false;
-}
-
-function mouseMove(event) {
-  mouseCurrentX = event.clientX;
-  mouseCurrentY = event.clientY;
-  if (checkDragOrClick() && isMouseDown) {
-    if (!isMouseDrag) {
-      console.log("start drag");
-    }
-    isMouseDrag = true;
-  }
-}
-
-function mouseLeave(event) {
-  isMouseDrag = false;
-  isMouseDown = false;
-}
-
-function renderPiece(currentPiece) {
-  if (currentPiece !== 0) {
-    return <img src={PIECE_TYPES[currentPiece]} alt="" />;
-  }
 }
 
 function checkSquareMatch(row, col, square) {
@@ -123,8 +88,11 @@ function App() {
   const [enPassantArray, setEnPassantArray] = useState(
     genEnPassantArray(boardArray)
   );
+  const [mousePos, setMousePos] = useState([0, 0]);
   const [turn, setTurn] = useState("White");
   const [selectedSquare, setSelectedSquare] = useState(null);
+  const [isMouseDown, setIsMouseDown] = useState(false);
+  const [isMouseDrag, setIsMouseDrag] = useState(false);
   const [legalSquareArray, setLegalSquareArray] = useState([]);
 
   function genBoard(boardArray) {
@@ -133,14 +101,7 @@ function App() {
 
   function iterateRows(row, currentRow) {
     function iterateColumns(currentPiece, currentColumn) {
-      function mouseDownSquare(event) {
-        isMouseDown = true;
-        mouseStartX = event.clientX;
-        mouseStartY = event.clientY;
-        event.stopPropagation();
-        event.preventDefault();
-      }
-      function clickSquare(event) {
+      function clickSquare() {
         // on click square, either select correct coloured piece, deselct piece, or move piece to legal square
         //select piece
         if (
@@ -150,8 +111,11 @@ function App() {
             (turn === "Black" &&
               currentPiece === currentPiece.toString().toLowerCase()))
         ) {
+          console.log("select meh!");
           setSelectedSquare([currentRow, currentColumn]);
-          setLegalSquareArray(genLegalSquareArray());
+          setLegalSquareArray(
+            genLegalSquareArray(selectedSquare, boardArray, turn)
+          );
         } else if (selectedSquare !== null) {
           //deselct piece
           if (checkSquareMatch(currentRow, currentColumn, selectedSquare)) {
@@ -192,24 +156,95 @@ function App() {
         }
       }
 
+      const currentSquareDragMatch =
+        isMouseDrag &&
+        selectedSquare &&
+        checkSquareMatch(currentRow, currentColumn, selectedSquare);
+
       return (
-        <div className={squareClass} onMouseDown={mouseDownSquare}>
-          {renderPiece(currentPiece)}
+        <div
+          className={squareClass}
+          onMouseMove={(event) => {
+            mouseCurrentX = event.clientX;
+            mouseCurrentY = event.clientY;
+            if (checkDragOrClick() && isMouseDown) {
+              if (!isMouseDrag) {
+                clickSquare();
+                console.log("start drag");
+              }
+              setIsMouseDrag(true);
+            }
+          }}
+          onMouseUp={(event) => {
+            clearTimeout(timeoutId);
+            timeoutId = null;
+            setIsMouseDrag(false);
+            setIsMouseDown(false);
+            setSelectedSquare(null);
+            if (isMouseDown) {
+              if (isMouseDrag) {
+                clickSquare();
+                console.log("square stop drag", { currentRow, currentColumn });
+              } else {
+                clickSquare();
+                console.log("square start clickSquare", {
+                  currentRow,
+                  currentColumn,
+                });
+              }
+            }
+          }}
+          onMouseDown={(event) => {
+            setIsMouseDown(true);
+            mouseStartX = event.clientX;
+            mouseStartY = event.clientY;
+            timeoutId = setTimeout(() => {
+              console.log("timeout");
+              clickSquare();
+              setIsMouseDrag(true);
+            }, 150);
+            event.stopPropagation();
+            event.preventDefault();
+          }}
+        >
+          {currentPiece !== 0 && !currentSquareDragMatch && (
+            <img src={PIECE_TYPES[currentPiece]} alt="" />
+          )}
         </div>
       );
     }
     return <div>{row.map(iterateColumns)}</div>;
   }
 
+  console.log({ isMouseDown, isMouseDrag });
+
   return (
-    <div
-      className="App"
-      onMouseUp={mouseUp}
-      onMouseMove={mouseMove}
-      onMouseLeave={mouseLeave}
-    >
+    <div className="App">
       <p>{turn} to move</p>
-      <div className="chessboard">{genBoard(boardArray)}</div>
+      {isMouseDrag && (
+        <div
+          className="movingPiece"
+          style={{ left: mousePos[0], top: mousePos[1] }}
+        >
+          <img src={PIECE_TYPES.r} alt="" />
+        </div>
+      )}
+      <div
+        className="chessboard"
+        onMouseMove={(event) => {
+          setMousePos([event.clientX, event.clientY]);
+        }}
+        onMouseLeave={(event) => {
+          console.log("stop drag mouse left");
+          clearTimeout(timeoutId);
+          timeoutId = null;
+          setSelectedSquare(null);
+          setIsMouseDrag(false);
+          setIsMouseDown(false);
+        }}
+      >
+        {genBoard(boardArray)}
+      </div>
     </div>
   );
 }
