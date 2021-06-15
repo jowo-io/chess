@@ -1,37 +1,18 @@
 import "./App.css";
 import { useState } from "react";
-import IMAGES from "./assets/index.js";
-import { fenToBoard, boardToFen } from "./fenCodeHandler.js";
+import IMAGES from "./assets/index";
+import { fenToBoard, boardToFen } from "./fenCodeHandler";
 import genLegalSquareArray from "./pieceLogic/genLegalSquares";
+import {
+  checkDragOrClick,
+  checkSquareMatch,
+  changeBoardArray,
+  changeTurn /*, genEnPassantArray*/,
+  getSquareClass,
+} from "./utils";
+import MovingPiece from "./components/MovingPiece";
 
-let fenCode = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
-
-const PIECE_TYPES = {
-  r: IMAGES.blackRook,
-  n: IMAGES.blackKnight,
-  b: IMAGES.blackBishop,
-  q: IMAGES.blackQueen,
-  k: IMAGES.blackKing,
-  p: IMAGES.blackPawn,
-  m: IMAGES.blackMoon,
-  g: IMAGES.blackGrave,
-  j: IMAGES.blackJester,
-  a: IMAGES.blackArchbishop,
-  c: IMAGES.blackChancellor,
-  o: IMAGES.blackRose,
-  R: IMAGES.whiteRook,
-  N: IMAGES.whiteKnight,
-  B: IMAGES.whiteBishop,
-  Q: IMAGES.whiteQueen,
-  K: IMAGES.whiteKing,
-  P: IMAGES.whitePawn,
-  M: IMAGES.whiteMoon,
-  G: IMAGES.whiteGrave,
-  J: IMAGES.whiteJester,
-  A: IMAGES.whiteArchbishop,
-  C: IMAGES.whiteChancellor,
-  O: IMAGES.whiteRose,
-};
+let fenCode = "rnbqkbnr/pppppppp/r7/8/8/R7/PPPPPPPP/RNBQKBNR";
 
 let timeoutId = null;
 let mouseStartX = null;
@@ -39,55 +20,11 @@ let mouseStartY = null;
 let mouseCurrentX = null;
 let mouseCurrentY = null;
 
-function checkDragOrClick() {
-  return (
-    Math.abs(mouseCurrentX - mouseStartX) > 10 &&
-    Math.abs(mouseCurrentY - mouseStartY) > 10
-  );
-}
-
-function checkSquareMatch(row, col, square) {
-  if (row === square[0] && col === square[1]) {
-    return true;
-  }
-  return false;
-}
-
-function changeBoardArray(
-  boardArray,
-  selectedSquare,
-  currentRow,
-  currentColumn
-) {
-  const movedPiece = boardArray[selectedSquare[0]][selectedSquare[1]];
-  boardArray[selectedSquare[0]][selectedSquare[1]] = 0;
-  boardArray[currentRow][currentColumn] = movedPiece;
-  return boardArray;
-}
-
-function changeTurn(turn) {
-  if (turn === "White") {
-    return "Black";
-  } else {
-    return "White";
-  }
-}
-
-function genEnPassantArray(boardArray) {
-  let enPassantArray = [[], []];
-  for (let i = 0; i < boardArray[0].length; i++) {
-    enPassantArray[0].push(0);
-    enPassantArray[1].push(0);
-  }
-  return enPassantArray;
-}
+// let enPassantArray = [];
+let castlingArray = [true, true, true, true];
 
 function App() {
   const [boardArray, setBoardArray] = useState(fenToBoard(fenCode));
-  const [castlingArray, setCastlingArray] = useState([true, true, true, true]);
-  const [enPassantArray, setEnPassantArray] = useState(
-    genEnPassantArray(boardArray)
-  );
   const [mousePos, setMousePos] = useState([0, 0]);
   const [turn, setTurn] = useState("White");
   const [selectedSquare, setSelectedSquare] = useState(null);
@@ -95,12 +32,15 @@ function App() {
   const [isMouseDrag, setIsMouseDrag] = useState(false);
   const [legalSquareArray, setLegalSquareArray] = useState([]);
 
-  function genBoard(boardArray) {
-    return boardArray.map(iterateRows);
+  function Board(props) {
+    return props.boardArray.map((row, index) => {
+      return <Row row={row} currentRow={index} />;
+    });
   }
 
-  function iterateRows(row, currentRow) {
-    function iterateColumns(currentPiece, currentColumn) {
+  // enPassantArray = genEnPassantArray(boardArray)
+  function Row({ row, currentRow }) {
+    function Column({ currentPiece, currentColumn }) {
       function clickSquare() {
         // on click square, either select correct coloured piece, deselct piece, or move piece to legal square
         //select piece
@@ -111,10 +51,15 @@ function App() {
             (turn === "Black" &&
               currentPiece === currentPiece.toString().toLowerCase()))
         ) {
-          console.log("select meh!");
           setSelectedSquare([currentRow, currentColumn]);
           setLegalSquareArray(
-            genLegalSquareArray(selectedSquare, boardArray, turn)
+            genLegalSquareArray(
+              [currentRow, currentColumn],
+              boardArray,
+              turn,
+              [] /*enPassantArray*/,
+              castlingArray
+            )
           );
         } else if (selectedSquare !== null) {
           //deselct piece
@@ -141,20 +86,13 @@ function App() {
           }
         }
       }
-      //displaying active square/ legal square
-      let squareClass = "";
-      if (selectedSquare !== null) {
-        if (
-          legalSquareArray.find((value) =>
-            checkSquareMatch(currentRow, currentColumn, value)
-          )
-        ) {
-          squareClass = "legalSquare";
-        }
-        if (checkSquareMatch(currentRow, currentColumn, selectedSquare)) {
-          squareClass = "selectedSquare";
-        }
-      }
+
+      const squareClass = getSquareClass(
+        selectedSquare,
+        legalSquareArray,
+        currentRow,
+        currentColumn
+      );
 
       const currentSquareDragMatch =
         isMouseDrag &&
@@ -167,10 +105,17 @@ function App() {
           onMouseMove={(event) => {
             mouseCurrentX = event.clientX;
             mouseCurrentY = event.clientY;
-            if (checkDragOrClick() && isMouseDown) {
+            if (
+              checkDragOrClick(
+                mouseCurrentX,
+                mouseStartX,
+                mouseCurrentY,
+                mouseStartY
+              ) &&
+              isMouseDown
+            ) {
               if (!isMouseDrag) {
                 clickSquare();
-                console.log("start drag");
               }
               setIsMouseDrag(true);
             }
@@ -187,10 +132,6 @@ function App() {
                 console.log("square stop drag", { currentRow, currentColumn });
               } else {
                 clickSquare();
-                console.log("square start clickSquare", {
-                  currentRow,
-                  currentColumn,
-                });
               }
             }
           }}
@@ -199,7 +140,6 @@ function App() {
             mouseStartX = event.clientX;
             mouseStartY = event.clientY;
             timeoutId = setTimeout(() => {
-              console.log("timeout");
               clickSquare();
               setIsMouseDrag(true);
             }, 150);
@@ -207,28 +147,32 @@ function App() {
             event.preventDefault();
           }}
         >
-          {currentPiece !== 0 && !currentSquareDragMatch && (
-            <img src={PIECE_TYPES[currentPiece]} alt="" />
+          {currentPiece !== 0 && !currentSquareDragMatch ? (
+            <img src={IMAGES[currentPiece]} alt="" />
+          ) : (
+            <img className="opaque" src={IMAGES[currentPiece]} alt="" />
           )}
         </div>
       );
     }
-    return <div>{row.map(iterateColumns)}</div>;
+    return (
+      <div>
+        {row.map((piece, index) => {
+          return <Column currentPiece={piece} currentColumn={index} />;
+        })}
+      </div>
+    );
   }
-
-  console.log({ isMouseDown, isMouseDrag });
+  // boardArray.map((row, index) => {
+  //   return <Row row={row} currentRow={index} />;
+  // })
 
   return (
     <div className="App">
       <p>{turn} to move</p>
-      {isMouseDrag && (
-        <div
-          className="movingPiece"
-          style={{ left: mousePos[0], top: mousePos[1] }}
-        >
-          <img src={PIECE_TYPES.r} alt="" />
-        </div>
-      )}
+      <p>is mouse dragging: {isMouseDrag ? "true" : "false"}</p>
+      <p>is mouse down: {isMouseDown ? "true" : "false"}</p>
+      {isMouseDrag && <MovingPiece x={mousePos[0]} y={mousePos[1]} />}
       <div
         className="chessboard"
         onMouseMove={(event) => {
@@ -243,7 +187,7 @@ function App() {
           setIsMouseDown(false);
         }}
       >
-        {genBoard(boardArray)}
+        <Board boardArray={boardArray} />
       </div>
     </div>
   );
