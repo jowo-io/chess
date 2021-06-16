@@ -1,7 +1,7 @@
 import rookLogic from "./rookLogic";
 import bishopLogic from "./bishopLogic";
 import queenLogic from "./queenLogic";
-import knightStyleLogic from "./knightLogic";
+import flowerLogic from "./flowerLogic";
 
 function genLegalSquares(
   selectedSquare,
@@ -26,7 +26,7 @@ function genLegalSquares(
       legalSquareArray = queenLogic(selectedSquare, boardArray, turn);
       break;
     case selectedPiece === "n":
-      legalSquareArray = knightStyleLogic(selectedSquare, boardArray, turn, [
+      legalSquareArray = flowerLogic(selectedSquare, boardArray, turn, [
         [1, 2],
         [-1, 2],
         [1, -2],
@@ -35,6 +35,18 @@ function genLegalSquares(
         [-2, 1],
         [2, -1],
         [-2, -1],
+      ]);
+      break;
+    case selectedPiece === "k":
+      legalSquareArray = flowerLogic(selectedSquare, boardArray, turn, [
+        [0, 1],
+        [0, -1],
+        [1, 0],
+        [-1, 0],
+        [1, 1],
+        [1, -1],
+        [-1, 1],
+        [-1, -1],
       ]);
       break;
     default:

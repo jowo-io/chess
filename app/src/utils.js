@@ -47,13 +47,24 @@ export function getSquareClass(
 }
 
 export function isTakeable(currentPiece, turn) {
-  if (
+  if (currentPiece === 0) {
+    return true;
+  } else if (
     (currentPiece !== currentPiece.toLowerCase() && turn === "Black") ||
     (currentPiece === currentPiece.toLowerCase() && turn === "White")
   ) {
     return true;
   } else {
     return false;
+  }
+}
+
+export function getValueFrom3dArray(x, y, array) {
+  try {
+    return array[x][y];
+  } catch (error) {
+    console.error(error);
+    return null;
   }
 }
 // export function genEnPassantArray(boardArray) {
