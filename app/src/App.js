@@ -2,7 +2,12 @@ import "./App.css";
 import { useState } from "react";
 import { fenToBoard, boardToFen } from "./fenCodeHandler";
 import genLegalSquareArray from "./pieceLogic/genLegalSquares";
-import { changeBoardArray, changeTurn, checkSquareMatch } from "./utils";
+import {
+  changeBoardArray,
+  changeTurn,
+  checkSquareMatch,
+  isTakeable,
+} from "./utils";
 import MovingPiece from "./components/MovingPiece";
 import Board from "./components/Board";
 
@@ -20,56 +25,40 @@ function App() {
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [legalSquareArray, setLegalSquareArray] = useState([]);
 
-  // enPassantArray = genEnPassantArray(boardArray)
-
-  function clickSquare({ currentPiece, currentRow, currentColumn }) {
-    // on click square, either select correct coloured piece, deselct piece, or move piece to legal square
-    //select piece
-
+  function clickSquare(
+    { currentPiece, currentRow, currentColumn },
+    wasMouseDown
+  ) {
     if (
-      selectedSquare === null &&
-      ((turn === "White" &&
-        currentPiece === currentPiece.toString().toUpperCase()) ||
-        (turn === "Black" &&
-          currentPiece === currentPiece.toString().toLowerCase()))
+      selectedSquare &&
+      checkSquareMatch(currentRow, currentColumn, selectedSquare) &&
+      wasMouseDown
     ) {
+      setSelectedSquare(null);
+    } else if (wasMouseDown && !isTakeable(currentPiece, turn)) {
       setSelectedSquare([currentRow, currentColumn]);
       setLegalSquareArray(
         genLegalSquareArray(
           [currentRow, currentColumn],
           boardArray,
           turn,
-          [] /*enPassantArray*/,
           castlingArray
         )
       );
-    } else if (selectedSquare !== null) {
-      //deselct piece
-      if (checkSquareMatch(currentRow, currentColumn, selectedSquare)) {
-        setSelectedSquare(null);
-      }
-      //move piece
-      if (
-        currentPiece !== null &&
-        legalSquareArray.find((value) =>
-          checkSquareMatch(currentRow, currentColumn, value)
-        )
-      ) {
-        setBoardArray(
-          changeBoardArray(
-            boardArray,
-            selectedSquare,
-            currentRow,
-            currentColumn
-          )
-        );
-        setTurn(changeTurn(turn));
-        setSelectedSquare(null);
-      }
+    } else if (
+      selectedSquare &&
+      legalSquareArray.find((value) =>
+        checkSquareMatch(currentRow, currentColumn, value)
+      )
+    ) {
+      setBoardArray(
+        changeBoardArray(boardArray, selectedSquare, currentRow, currentColumn)
+      );
+      setTurn(changeTurn(turn));
+      setSelectedSquare(null);
     }
   }
 
-  //need something here, ie selectedPiece vs dragging
   return (
     <div className="App">
       <p>{turn} to move</p>
@@ -96,7 +85,6 @@ function App() {
           boardArray={boardArray}
           selectedSquare={selectedSquare}
           turn={turn}
-          boardArray={boardArray}
           legalSquareArray={legalSquareArray}
           onMouseMove={({ clientX, clientY }) => {
             mouseCurrentX = clientX;
@@ -104,15 +92,15 @@ function App() {
           }}
           onMouseUp={(args) => {
             setIsMouseDown(false);
-            clickSquare(args);
+            clickSquare(args, false);
           }}
           onMouseDown={(args) => {
             setIsMouseDown(true);
-            clickSquare(args);
+            clickSquare(args, true);
           }}
         />
       </div>
-      <p>Fen Code:d {boardToFen(boardArray)}</p>
+      <p>Fen Code: {boardToFen(boardArray)}</p>
     </div>
   );
 }

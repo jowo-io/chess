@@ -50,10 +50,12 @@ function genLegalSquares(
       ]);
       break;
     default:
-      legalSquareArray = [
-        [5, 3],
-        [2, 2],
-      ];
+      legalSquareArray = flowerLogic(selectedSquare, boardArray, turn, [
+        [0, 1],
+        [0, 2],
+        [0, -1],
+        [0, -2],
+      ]);
   }
   return legalSquareArray;
 }
