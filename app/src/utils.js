@@ -1,10 +1,3 @@
-export function checkDragOrClick(mouseCurrentX, mouseStartX, mouseCurrentY, mouseStartY) {
-  return (
-    Math.abs(mouseCurrentX - mouseStartX) > 10 &&
-    Math.abs(mouseCurrentY - mouseStartY) > 10
-  );
-}
-
 export function checkSquareMatch(row, col, square) {
   if (row === square[0] && col === square[1]) {
     return true;
@@ -32,7 +25,12 @@ export function changeTurn(turn) {
   }
 }
 
-export function getSquareClass(selectedSquare, legalSquareArray, currentRow, currentColumn) {
+export function getSquareClass(
+  selectedSquare,
+  legalSquareArray,
+  currentRow,
+  currentColumn
+) {
   if (selectedSquare !== null) {
     if (
       legalSquareArray.find((value) =>
@@ -46,6 +44,17 @@ export function getSquareClass(selectedSquare, legalSquareArray, currentRow, cur
     }
   }
   return "";
+}
+
+export function isTakeable(currentPiece, turn) {
+  if (
+    (currentPiece !== currentPiece.toLowerCase() && turn === "Black") ||
+    (currentPiece === currentPiece.toLowerCase() && turn === "White")
+  ) {
+    return true;
+  } else {
+    return false;
+  }
 }
 // export function genEnPassantArray(boardArray) {
 //   let enPassantArray = [[], []];
