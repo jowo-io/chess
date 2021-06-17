@@ -1,5 +1,5 @@
-import rookLogic from "./rookLogic";
-import bishopLogic from "./bishopLogic";
+import parrallelLineLogic from "./parrallelLineLogic";
+import diagonalLineLogic from "./diagonalLineLogic";
 import queenLogic from "./queenLogic";
 import flowerLogic from "./flowerLogic";
 
@@ -13,17 +13,34 @@ function genLegalSquares(
   let selectedPiece = boardArray[selectedSquare[0]][
     selectedSquare[1]
   ].toLowerCase();
-  //selectedSquare 0 = y pos, selectedSquare 1 = x pos
   let legalSquareArray = [];
+  let args = { selectedSquare, boardArray, turn };
+  //main board logic below
   switch (true) {
     case selectedPiece === "r":
-      legalSquareArray = rookLogic(selectedSquare, boardArray, turn);
+      legalSquareArray = parrallelLineLogic(args, 1, true).concat(
+        parrallelLineLogic(args, -1, true),
+        parrallelLineLogic(args, 1, false),
+        parrallelLineLogic(args, -1, false)
+      );
       break;
     case selectedPiece === "b":
-      legalSquareArray = bishopLogic(selectedSquare, boardArray, turn);
+      legalSquareArray = diagonalLineLogic(args, 1, 1).concat(
+        diagonalLineLogic(args, 1, -1),
+        diagonalLineLogic(args, -1, 1),
+        diagonalLineLogic(args, -1, -1)
+      );
       break;
     case selectedPiece === "q":
-      legalSquareArray = queenLogic(selectedSquare, boardArray, turn);
+      legalSquareArray = parrallelLineLogic(args, 1, true).concat(
+        parrallelLineLogic(args, -1, true),
+        parrallelLineLogic(args, 1, false),
+        parrallelLineLogic(args, -1, false),
+        diagonalLineLogic(args, 1, 1),
+        diagonalLineLogic(args, 1, -1),
+        diagonalLineLogic(args, -1, 1),
+        diagonalLineLogic(args, -1, -1)
+      );
       break;
     case selectedPiece === "n":
       legalSquareArray = flowerLogic(selectedSquare, boardArray, turn, [
