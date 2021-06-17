@@ -3,7 +3,11 @@ import { useState } from "react";
 import { fenToBoard, boardToFen } from "./fenCodeHandler";
 import genLegalSquareArray from "./pieceLogic/genLegalSquares";
 import {
-  changeBoardArray,
+  genEnPassantArray,
+  updateEnPassantArray,
+} from "./enPassantArrayHandler";
+import {
+  updateBoardArray,
   changeTurn,
   checkSquareMatch,
   isTakeable,
@@ -24,7 +28,9 @@ function App() {
   const [selectedSquare, setSelectedSquare] = useState(null);
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [legalSquareArray, setLegalSquareArray] = useState([]);
-
+  const [enPassantArray, setEnPassantArray] = useState(
+    genEnPassantArray(boardArray)
+  );
   function clickSquare(
     { currentPiece, currentRow, currentColumn },
     wasMouseDown
@@ -42,6 +48,7 @@ function App() {
           [currentRow, currentColumn],
           boardArray,
           turn,
+          enPassantArray,
           castlingArray
         )
       );
@@ -51,8 +58,17 @@ function App() {
         checkSquareMatch(currentRow, currentColumn, value)
       )
     ) {
+      setEnPassantArray(
+        updateEnPassantArray(
+          boardArray,
+          selectedSquare,
+          currentRow,
+          currentColumn,
+          enPassantArray
+        )
+      );
       setBoardArray(
-        changeBoardArray(boardArray, selectedSquare, currentRow, currentColumn)
+        updateBoardArray(boardArray, selectedSquare, currentRow, currentColumn)
       );
       setTurn(changeTurn(turn));
       setSelectedSquare(null);

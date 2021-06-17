@@ -5,7 +5,7 @@ export function checkSquareMatch(row, col, square) {
   return false;
 }
 
-export function changeBoardArray(
+export function updateBoardArray(
   boardArray,
   selectedSquare,
   currentRow,
@@ -67,11 +67,3 @@ export function getValueFrom3dArray(x, y, array) {
     return null;
   }
 }
-// export function genEnPassantArray(boardArray) {
-//   let enPassantArray = [[], []];
-//   for (let i = 0; i < boardArray[0].length; i++) {
-//     enPassantArray[0].push(0);
-//     enPassantArray[1].push(0);
-//   }
-//   return enPassantArray;
-// }

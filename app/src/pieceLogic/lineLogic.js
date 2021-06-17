@@ -1,6 +1,6 @@
 import { isTakeable } from "../utils";
 
-function diagonalLineLogic(
+function lineLogic(
   { selectedSquare, boardArray, turn },
   horizontalCount,
   verticalCount
@@ -25,4 +25,4 @@ function diagonalLineLogic(
   return legalSquareArray;
 }
 
-export default diagonalLineLogic;
+export default lineLogic;

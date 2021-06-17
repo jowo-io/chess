@@ -1,6 +1,6 @@
 import { isTakeable } from "../utils";
 
-function flowerLogic(selectedSquare, boardArray, turn, patternArray) {
+function flowerLogic({ selectedSquare, boardArray, turn }, patternArray) {
   let legalSquareArray = [];
   for (let i = 0; i < patternArray.length; i++) {
     // do it by setting x pos and y pos for each thign and testign if within range

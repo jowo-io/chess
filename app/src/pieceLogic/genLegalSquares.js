@@ -1,7 +1,6 @@
-import parrallelLineLogic from "./parrallelLineLogic";
-import diagonalLineLogic from "./diagonalLineLogic";
-import queenLogic from "./queenLogic";
+import lineLogic from "./lineLogic";
 import flowerLogic from "./flowerLogic";
+import pawnLogic from "./pawnLogic";
 
 function genLegalSquares(
   selectedSquare,
@@ -15,35 +14,36 @@ function genLegalSquares(
   ].toLowerCase();
   let legalSquareArray = [];
   let args = { selectedSquare, boardArray, turn };
+
   //main board logic below
   switch (true) {
     case selectedPiece === "r":
-      legalSquareArray = parrallelLineLogic(args, 1, true).concat(
-        parrallelLineLogic(args, -1, true),
-        parrallelLineLogic(args, 1, false),
-        parrallelLineLogic(args, -1, false)
+      legalSquareArray = lineLogic(args, 0, 1).concat(
+        lineLogic(args, 0, -1),
+        lineLogic(args, 1, 0),
+        lineLogic(args, -1, 0)
       );
       break;
     case selectedPiece === "b":
-      legalSquareArray = diagonalLineLogic(args, 1, 1).concat(
-        diagonalLineLogic(args, 1, -1),
-        diagonalLineLogic(args, -1, 1),
-        diagonalLineLogic(args, -1, -1)
+      legalSquareArray = lineLogic(args, 1, 1).concat(
+        lineLogic(args, 1, -1),
+        lineLogic(args, -1, 1),
+        lineLogic(args, -1, -1)
       );
       break;
     case selectedPiece === "q":
-      legalSquareArray = parrallelLineLogic(args, 1, true).concat(
-        parrallelLineLogic(args, -1, true),
-        parrallelLineLogic(args, 1, false),
-        parrallelLineLogic(args, -1, false),
-        diagonalLineLogic(args, 1, 1),
-        diagonalLineLogic(args, 1, -1),
-        diagonalLineLogic(args, -1, 1),
-        diagonalLineLogic(args, -1, -1)
+      legalSquareArray = lineLogic(args, 0, 1).concat(
+        lineLogic(args, 0, -1),
+        lineLogic(args, 1, 0),
+        lineLogic(args, -1, 0),
+        lineLogic(args, 1, 1),
+        lineLogic(args, 1, -1),
+        lineLogic(args, -1, 1),
+        lineLogic(args, -1, -1)
       );
       break;
     case selectedPiece === "n":
-      legalSquareArray = flowerLogic(selectedSquare, boardArray, turn, [
+      legalSquareArray = flowerLogic(args, [
         [1, 2],
         [-1, 2],
         [1, -2],
@@ -55,7 +55,7 @@ function genLegalSquares(
       ]);
       break;
     case selectedPiece === "k":
-      legalSquareArray = flowerLogic(selectedSquare, boardArray, turn, [
+      legalSquareArray = flowerLogic(args, [
         [0, 1],
         [0, -1],
         [1, 0],
@@ -66,13 +66,9 @@ function genLegalSquares(
         [-1, -1],
       ]);
       break;
+    case selectedPiece === "p":
+      legalSquareArray = flowerLogic(args, pawnLogic(args, enPassantArray));
     default:
-      legalSquareArray = flowerLogic(selectedSquare, boardArray, turn, [
-        [0, 1],
-        [0, 2],
-        [0, -1],
-        [0, -2],
-      ]);
   }
   return legalSquareArray;
 }
