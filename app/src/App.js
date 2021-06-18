@@ -15,7 +15,8 @@ import {
 import MovingPiece from "./components/MovingPiece";
 import Board from "./components/Board";
 
-let fenCode = "rnbqkbnr/pppppppp/r7/8/8/R7/PPPPPPPP/RNBQKBNR";
+let fenCode = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+//let fenCode = "";
 
 let mouseCurrentX = null;
 let mouseCurrentY = null;
@@ -68,7 +69,13 @@ function App() {
         )
       );
       setBoardArray(
-        updateBoardArray(boardArray, selectedSquare, currentRow, currentColumn)
+        updateBoardArray(
+          boardArray,
+          selectedSquare,
+          currentRow,
+          currentColumn,
+          turn
+        )
       );
       setTurn(changeTurn(turn));
       setSelectedSquare(null);

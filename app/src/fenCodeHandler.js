@@ -3,7 +3,7 @@ export function fenToBoard(fen) {
   let board = [];
   for (let i = 0; i < fenRows.length; i++) {
     let row = [];
-    var countNumber = "";
+    var countNumber = 0;
     for (let j = 0; j < fenRows[i].length; j++) {
       if (!isNaN(fenRows[i][j])) {
         countNumber += fenRows[i][j];
@@ -12,6 +12,7 @@ export function fenToBoard(fen) {
           for (let k = 0; k < parseInt(countNumber); k++) {
             row.push(0);
           }
+          countNumber = "";
         }
         row.push(fenRows[i][j]);
       }

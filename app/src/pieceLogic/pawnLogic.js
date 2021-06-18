@@ -1,11 +1,8 @@
+import { turnToTurnDirection } from "../utils";
+
 function pawnLogic({ selectedSquare, boardArray, turn }, enPassantArray) {
-  let turnDirection = 0;
   //set direction pawn moves
-  if (turn === "White") {
-    turnDirection = 1;
-  } else {
-    turnDirection = -1;
-  }
+  const turnDirection = turnToTurnDirection(turn);
   //pawn can always move one forward if nothing is in front
   let flowerArray = [];
   // this if statement only works for pawn moving 2 forward
@@ -14,7 +11,8 @@ function pawnLogic({ selectedSquare, boardArray, turn }, enPassantArray) {
   }
   if (
     enPassantArray[selectedSquare[0]][selectedSquare[1]] === 1 &&
-    boardArray[selectedSquare[0] - turnDirection][selectedSquare[1]] === 0
+    boardArray[selectedSquare[0] - turnDirection][selectedSquare[1]] === 0 &&
+    boardArray[selectedSquare[0] - 2 * turnDirection][selectedSquare[1]] === 0
   ) {
     flowerArray.push([0, 2 * turnDirection]);
   }
@@ -27,6 +25,12 @@ function pawnLogic({ selectedSquare, boardArray, turn }, enPassantArray) {
     boardArray[selectedSquare[0] - turnDirection][selectedSquare[1] + 1] !== 0
   ) {
     flowerArray.push([-1, turnDirection]);
+  }
+  if (enPassantArray[selectedSquare[0]][selectedSquare[1] + 1] === 3) {
+    flowerArray.push([-1, turnDirection]);
+  }
+  if (enPassantArray[selectedSquare[0]][selectedSquare[1] - 1] === 3) {
+    flowerArray.push([1, turnDirection]);
   }
   return flowerArray;
 }

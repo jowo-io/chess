@@ -5,15 +5,47 @@ export function checkSquareMatch(row, col, square) {
   return false;
 }
 
+export function isTakeable(currentPiece, turn) {
+  if (currentPiece === 0) {
+    return true;
+  } else if (
+    (currentPiece !== currentPiece.toLowerCase() && turn === "Black") ||
+    (currentPiece === currentPiece.toLowerCase() && turn === "White")
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+}
+export function turnToTurnDirection(turn) {
+  let turnDirection = null;
+  if (turn === "White") {
+    turnDirection = 1;
+  } else {
+    turnDirection = -1;
+  }
+  return turnDirection;
+}
+
 export function updateBoardArray(
   boardArray,
   selectedSquare,
   currentRow,
-  currentColumn
+  currentColumn,
+  turn
 ) {
   const movedPiece = boardArray[selectedSquare[0]][selectedSquare[1]];
   boardArray[selectedSquare[0]][selectedSquare[1]] = 0;
   boardArray[currentRow][currentColumn] = movedPiece;
+  //need execption for enPassant
+  const turnDirection = turnToTurnDirection(turn);
+  if (
+    movedPiece.toLowerCase() === "p" &&
+    boardArray[currentRow][currentColumn] === 0 &&
+    isTakeable(boardArray[currentRow + turnDirection][currentColumn], turn)
+  ) {
+    boardArray[currentRow + turnDirection][currentColumn] = 0;
+  }
   return boardArray;
 }
 
@@ -44,19 +76,6 @@ export function getSquareClass(
     }
   }
   return "";
-}
-
-export function isTakeable(currentPiece, turn) {
-  if (currentPiece === 0) {
-    return true;
-  } else if (
-    (currentPiece !== currentPiece.toLowerCase() && turn === "Black") ||
-    (currentPiece === currentPiece.toLowerCase() && turn === "White")
-  ) {
-    return true;
-  } else {
-    return false;
-  }
 }
 
 export function getValueFrom3dArray(x, y, array) {
