@@ -10,7 +10,9 @@ login menu pops up
 
 Dan:
 
-- add enPassant
+- code Rose movement
+- add enPassant /
+- fix pawn movment for larger board
 - add castling
 - think about check
 - think about promotions

@@ -20,7 +20,7 @@ export const PIECE_FEN_TYPES = {
   whiteMoon: "M",
   whiteGrave: "G",
   whiteJester: "J",
-  whiteArchbisho: "A",
+  whiteArchbishop: "A",
   whiteChancellor: "C",
   whiteRose: "O",
 };
