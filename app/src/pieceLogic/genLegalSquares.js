@@ -67,7 +67,7 @@ function genLegalSquares(
       ]);
       break;
     case selectedPiece === "p":
-      legalSquareArray = flowerLogic(args, pawnLogic(args, enPassantArray));
+      legalSquareArray = pawnLogic(args, enPassantArray);
       break;
     case selectedPiece === "a":
       legalSquareArray = lineLogic(args, 1, 1).concat(
@@ -131,6 +131,7 @@ function genLegalSquares(
         [2, -2],
         [-2, -2],
       ]);
+      break;
     case selectedPiece === "j":
       legalSquareArray = flowerLogic(args, [
         [1, 2],

@@ -16,8 +16,8 @@ import MovingPiece from "./components/MovingPiece";
 import Board from "./components/Board";
 
 let fenCode =
-  "rnmgboaqkcjbgmkr/pppppppppppppppp/16/16/16/16/16/16/16/16/16/16/16/16/PPPPPPPPPPPPPPPP/RNMGBOAQKCJBGMKR";
-//let fenCode = "";
+  "rnmgboaqkcjbgmnr/pppppppppppppppp/16/16/16/16/16/16/16/16/16/16/16/16/PPPPPPPPPPPPPPPP/RNMGBOAQKCJBGMNR";
+//let fenCode = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
 
 let mouseCurrentX = null;
 let mouseCurrentY = null;

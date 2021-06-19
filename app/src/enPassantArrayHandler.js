@@ -40,6 +40,5 @@ export function updateEnPassantArray(
       enPassantArray[currentRow][currentColumn] = 2;
     }
   }
-  console.log(enPassantArray);
   return enPassantArray;
 }
