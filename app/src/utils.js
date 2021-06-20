@@ -39,12 +39,20 @@ export function updateBoardArray(
   boardArray[currentRow][currentColumn] = movedPiece;
   //need execption for enPassant
   const turnDirection = turnToTurnDirection(turn);
-  if (
-    movedPiece.toLowerCase() === "p" &&
-    boardArray[currentRow][currentColumn] === 0 &&
-    isTakeable(boardArray[currentRow + turnDirection][currentColumn], turn)
-  ) {
-    boardArray[currentRow + turnDirection][currentColumn] = 0;
+  if (movedPiece.toLowerCase() === "p") {
+    for (
+      let i = currentRow;
+      i < boardArray.length && i > -1;
+      i = i + turnDirection
+    ) {
+      if (
+        (boardArray[i][currentColumn] === "p" ||
+          boardArray[i][currentColumn] === "P") &&
+        isTakeable(boardArray[i][currentColumn], turn)
+      ) {
+        boardArray[i][currentColumn] = 0;
+      }
+    }
   }
   return boardArray;
 }

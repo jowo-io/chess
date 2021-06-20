@@ -1,6 +1,6 @@
 import { turnToTurnDirection, isTakeable } from "../utils";
 
-//make it not flower array
+//a cluttered mess
 function pawnLogic({ selectedSquare, boardArray, turn }, enPassantArray) {
   //set direction pawn moves
   const turnDirection = turnToTurnDirection(turn);

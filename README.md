@@ -15,6 +15,8 @@ Dan:
 - add castling
 - think about check
 - think about promotions
+- domain name
+- rename column to square
 
 Jo:
 

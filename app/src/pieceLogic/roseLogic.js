@@ -10,13 +10,12 @@ function roseLogic({ selectedSquare, boardArray, turn }) {
     }
   }
   let flowerArray = [];
-  if (isOpposite(boardArray[selectedSquare[0] + 1][selectedSquare[1] + 2])) {
-    flowerArray.push([1, 2]);
-  } else if (boardArray[selectedSquare[0] + 1][selectedSquare[1] + 2] === 0) {
-    flowerArray.push([1, 2]);
-  }
+  const roseMoveset = {
+    // 1,2: [[0,4],[3,3]],
+    // 2,1: [[3,3],[4,0]]
+  };
 
-  return flowerArray;
+  return roseMoveset;
 }
 
 export default roseLogic;

@@ -1,6 +1,7 @@
 import lineLogic from "./lineLogic";
 import flowerLogic from "./flowerLogic";
 import pawnLogic from "./pawnLogic";
+import roseLogic from "./roseLogic";
 
 function genLegalSquares(
   selectedSquare,
@@ -163,6 +164,9 @@ function genLegalSquares(
         [3, -1],
         [3, -2],
       ]);
+      break;
+    case selectedPiece === "o":
+      legalSquareArray = flowerLogic(args, roseLogic(args));
       break;
   }
   return legalSquareArray;
