@@ -2,7 +2,6 @@ import { turnToTurnDirection, isTakeable } from "../utils";
 
 //a cluttered mess
 function pawnLogic({ selectedSquare, boardArray, turn }, enPassantArray) {
-  console.log("function called");
   //set direction pawn moves
   const turnDirection = turnToTurnDirection(turn);
   //pawn can always move one forward if nothing is in front
@@ -22,9 +21,9 @@ function pawnLogic({ selectedSquare, boardArray, turn }, enPassantArray) {
     } else {
       halfWay = Math.floor(boardArray.length / 2);
     }
-    // first big move
+    // first big move can jump over pieces
     for (
-      let i = selectedSquare[0] - 2 * turnDirection;
+      let i = selectedSquare[0] - 1 * turnDirection;
       i !== halfWay;
       i = i - turnDirection
     ) {

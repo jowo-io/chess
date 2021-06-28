@@ -45,8 +45,8 @@ function Column({
       }}
     >
       <div className="squareHighlight">
-        {isTakeable && <img src={takeableHighlight} />}
-        {isLegal && <img src={movableHighlight} />}
+        {isTakeable && <img src={takeableHighlight} alt="" />}
+        {isLegal && <img src={movableHighlight} alt="" />}
       </div>
       {currentPiece !== 0 && !currentSquareDragMatch ? (
         <img src={PIECE_IMAGES[currentPiece]} alt="" />

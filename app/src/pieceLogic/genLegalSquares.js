@@ -104,7 +104,6 @@ function genLegalSquares(
         ])
       );
       break;
-
     case selectedPiece === "m":
       legalSquareArray = flowerLogic(args, [
         [0, 2],
@@ -186,6 +185,7 @@ function genLegalSquares(
         ])
       );
       break;
+    default:
   }
   return legalSquareArray;
 }

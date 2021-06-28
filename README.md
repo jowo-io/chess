@@ -10,8 +10,9 @@ login menu pops up
 
 Dan:
 
-- code Rose movement
-- improve pawn movement
+- code Rose movement /
+- improve pawn movement /
+- pawns can jump with first move for some reason /
 - add castling
 - think about check
 - think about promotions
