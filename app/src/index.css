@@ -39,13 +39,14 @@ p {
   vertical-align: top;
   background-repeat: no-repeat;
   background-size: cover;
+  position: relative;
 }
 
 .chessboard > div > div.selectedSquare {
-  box-shadow: 0px 0px 0px 2px white inset;
+  /* box-shadow: 0px 0px 0px 2px white inset; */
 }
 .chessboard > div > div.legalSquare {
-  box-shadow: 0px 0px 0px 1px blue inset;
+  /* box-shadow: 0px 0px 0px 1px blue inset; */
 }
 
 .chessboard > div:nth-child(odd) > div:nth-child(even),
@@ -79,4 +80,16 @@ p {
 .chessboard img {
   height: 95%;
   user-select: none;
+}
+
+.squareHighlight {
+  opacity: 0.5;
+  user-select: none;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  position: absolute;
 }

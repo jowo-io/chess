@@ -13,7 +13,11 @@ function flowerLogic({ selectedSquare, boardArray, turn }, patternArray) {
       currentYCoords < boardArray.length &&
       isTakeable(boardArray[currentXCoords][currentYCoords], turn)
     ) {
-      legalSquareArray.push([currentXCoords, currentYCoords]);
+      if (boardArray[currentXCoords][currentYCoords] === 0) {
+        legalSquareArray.push([currentXCoords, currentYCoords, false]);
+      } else {
+        legalSquareArray.push([currentXCoords, currentYCoords, true]);
+      }
     }
   }
   return legalSquareArray;

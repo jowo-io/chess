@@ -1,4 +1,4 @@
-import IMAGES from "../assets/index";
+import PIECE_IMAGES from "../constants/pieceImages";
 import { getValueFrom3dArray } from "../utils";
 
 function MovingPiece({ x, y, selectedSquare, boardArray }) {
@@ -9,7 +9,7 @@ function MovingPiece({ x, y, selectedSquare, boardArray }) {
   );
   return (
     <div className="movingPiece" style={{ left: x, top: y }}>
-      <img src={IMAGES[piece]} alt="" />
+      <img src={PIECE_IMAGES[piece]} alt="" />
     </div>
   );
 }

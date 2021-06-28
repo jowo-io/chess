@@ -166,7 +166,25 @@ function genLegalSquares(
       ]);
       break;
     case selectedPiece === "o":
-      legalSquareArray = flowerLogic(args, roseLogic(args));
+      legalSquareArray = roseLogic(args, [
+        [1, 2],
+        [-1, 2],
+        [-2, 1],
+        [-2, -1],
+        [-1, -2],
+        [1, -2],
+        [2, -1],
+      ]).concat(
+        roseLogic(args, [
+          [1, 2],
+          [2, 1],
+          [2, -1],
+          [1, -2],
+          [-1, -2],
+          [-2, -1],
+          [-2, 1],
+        ])
+      );
       break;
   }
   return legalSquareArray;

@@ -2,6 +2,7 @@ import { turnToTurnDirection, isTakeable } from "../utils";
 
 //a cluttered mess
 function pawnLogic({ selectedSquare, boardArray, turn }, enPassantArray) {
+  console.log("function called");
   //set direction pawn moves
   const turnDirection = turnToTurnDirection(turn);
   //pawn can always move one forward if nothing is in front
@@ -11,6 +12,7 @@ function pawnLogic({ selectedSquare, boardArray, turn }, enPassantArray) {
     legalSquareArray.push([
       selectedSquare[0] - turnDirection,
       selectedSquare[1],
+      false,
     ]);
   }
   if (enPassantArray[selectedSquare[0]][selectedSquare[1]] === 1) {
@@ -44,6 +46,7 @@ function pawnLogic({ selectedSquare, boardArray, turn }, enPassantArray) {
         legalSquareArray.push([
           selectedSquare[0] - turnDirection,
           selectedSquare[1] - 1,
+          true,
         ]);
         break;
       }
@@ -51,6 +54,7 @@ function pawnLogic({ selectedSquare, boardArray, turn }, enPassantArray) {
         legalSquareArray.push([
           selectedSquare[0] - turnDirection,
           selectedSquare[1] + 1,
+          true,
         ]);
         break;
       }
@@ -68,6 +72,7 @@ function pawnLogic({ selectedSquare, boardArray, turn }, enPassantArray) {
     legalSquareArray.push([
       selectedSquare[0] - turnDirection,
       selectedSquare[1] + 1,
+      true,
     ]);
   }
 
@@ -82,6 +87,7 @@ function pawnLogic({ selectedSquare, boardArray, turn }, enPassantArray) {
     legalSquareArray.push([
       selectedSquare[0] - turnDirection,
       selectedSquare[1] - 1,
+      true,
     ]);
   }
 

@@ -5,6 +5,37 @@ export function checkSquareMatch(row, col, square) {
   return false;
 }
 
+export function isOpposite(piece, turn) {
+  if (
+    (piece !== piece.toLowerCase() && turn === "Black") ||
+    (piece === piece.toLowerCase() && turn === "White")
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+}
+export function sumArray(array1, array2, multiply1, multiply2, isFlip) {
+  if (isFlip) {
+    return [
+      array1[0] + multiply1 * array2[1],
+      array1[1] + multiply2 * array2[0],
+    ];
+  } else {
+    return [
+      array1[0] + multiply1 * array2[0],
+      array1[1] + multiply2 * array2[1],
+    ];
+  }
+}
+
+export function checkSquareMatchTemp(row, col, square) {
+  if (row === square[0] && col === square[1] && square[2]) {
+    return true;
+  }
+  return false;
+}
+
 export function isTakeable(currentPiece, turn) {
   if (currentPiece === 0) {
     return true;
@@ -17,6 +48,7 @@ export function isTakeable(currentPiece, turn) {
     return false;
   }
 }
+
 export function turnToTurnDirection(turn) {
   let turnDirection = null;
   if (turn === "White") {
@@ -65,25 +97,47 @@ export function changeTurn(turn) {
   }
 }
 
-export function getSquareClass(
+export function getSquareInfo(
   selectedSquare,
   legalSquareArray,
   currentRow,
   currentColumn
 ) {
+  let className = "";
+  let isTakeable = false;
+  let isLegal = false;
+  let isCheck = false;
+  let isSelected = false;
+
   if (selectedSquare !== null) {
     if (
       legalSquareArray.find((value) =>
         checkSquareMatch(currentRow, currentColumn, value)
       )
     ) {
-      return "legalSquare";
+      if (
+        legalSquareArray.find((value) =>
+          checkSquareMatchTemp(currentRow, currentColumn, value)
+        )
+      ) {
+        isTakeable = true;
+      } else {
+        isLegal = true;
+      }
     }
     if (checkSquareMatch(currentRow, currentColumn, selectedSquare)) {
-      return "selectedSquare";
+      className = "selectedSquare";
+      isSelected = true;
     }
   }
-  return "";
+
+  return {
+    className,
+    isTakeable,
+    isLegal,
+    isCheck,
+    isSelected,
+  };
 }
 
 export function getValueFrom3dArray(x, y, array) {

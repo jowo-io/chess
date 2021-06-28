@@ -1,5 +1,7 @@
-import IMAGES from "../assets/index";
-import { checkSquareMatch, getSquareClass } from "../utils";
+import PIECE_IMAGES from "../constants/pieceImages";
+import { checkSquareMatch, getSquareInfo } from "../utils";
+import movableHighlight from "../assets/movableHighlight.png";
+import takeableHighlight from "../assets/takeableHighlight.png";
 
 function Column({
   currentPiece,
@@ -13,7 +15,7 @@ function Column({
   onMouseUp,
   onMouseDown,
 }) {
-  const squareClass = getSquareClass(
+  const { className, isTakeable, isLegal, isCheck, isSelected } = getSquareInfo(
     selectedSquare,
     legalSquareArray,
     currentRow,
@@ -26,7 +28,7 @@ function Column({
 
   return (
     <div
-      className={squareClass}
+      className={className}
       onMouseMove={(event) => {
         onMouseMove({
           clientX: event.clientX,
@@ -42,10 +44,14 @@ function Column({
         event.preventDefault();
       }}
     >
+      <div className="squareHighlight">
+        {isTakeable && <img src={takeableHighlight} />}
+        {isLegal && <img src={movableHighlight} />}
+      </div>
       {currentPiece !== 0 && !currentSquareDragMatch ? (
-        <img src={IMAGES[currentPiece]} alt="" />
+        <img src={PIECE_IMAGES[currentPiece]} alt="" />
       ) : (
-        <img className="opaque" src={IMAGES[currentPiece]} alt="" />
+        <img className="opaque" src={PIECE_IMAGES[currentPiece]} alt="" />
       )}
     </div>
   );

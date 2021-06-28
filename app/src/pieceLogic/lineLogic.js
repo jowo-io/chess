@@ -14,9 +14,9 @@ function lineLogic(
   ) {
     let currentPiece = boardArray[y][x];
     if (currentPiece === 0) {
-      legalSquareArray.push([y, x]);
+      legalSquareArray.push([y, x, false]);
     } else if (isTakeable(currentPiece, turn)) {
-      legalSquareArray.push([y, x]);
+      legalSquareArray.push([y, x, true]);
       break;
     } else {
       break;
