@@ -25,30 +25,26 @@ function roseLogic({ selectedSquare, boardArray, turn }, shiftArray) {
       );
       if (
         currentSquare[0] < 0 ||
-        currentSquare[0] > boardArray.length ||
+        currentSquare[0] > boardArray.length - 1 ||
         currentSquare[1] < 0 ||
-        currentSquare[1] > boardArray.length
+        currentSquare[1] > boardArray.length - 1
       ) {
-        break;
-      }
-      console.log(
-        boardArray[currentSquare[0]][currentSquare[1]],
-        "break",
-        currentSquare[0],
-        currentSquare[1]
-      );
-      if (boardArray[currentSquare[0]][currentSquare[1]] === 0) {
-        legalSquareArray.push([currentSquare[0], currentSquare[1]]);
-      } else if (
-        isOpposite(boardArray[currentSquare[0]][currentSquare[1]], turn)
-      ) {
-        legalSquareArray.push([currentSquare[0], currentSquare[1], true]);
         break;
       } else {
-        break;
+        if (boardArray[currentSquare[0]][currentSquare[1]] === 0) {
+          legalSquareArray.push([currentSquare[0], currentSquare[1]]);
+        } else if (
+          isOpposite(boardArray[currentSquare[0]][currentSquare[1]], turn)
+        ) {
+          legalSquareArray.push([currentSquare[0], currentSquare[1], true]);
+          break;
+        } else {
+          break;
+        }
       }
     }
   }
+
   return legalSquareArray;
 }
 
