@@ -1,15 +1,15 @@
 import "./App.css";
 import { useState } from "react";
-import { fenToBoard, boardToFen } from "./fenCodeHandler";
+import { fenToBoard, boardToFen } from "./utils/old/fenCodeHandler";
 import genLegalSquareArray from "./pieceLogic/genLegalSquares";
 import {
   genEnPassantArray,
   updateEnPassantArray,
-} from "./enPassantArrayHandler";
+} from "./utils/old/enPassantArrayHandler";
 import {
   genCastlingArray,
   updateCastlingArray,
-} from "./castlingArrayHandler.js";
+} from "./utils/old/castlingArrayHandler";
 import {
   updateBoardArray,
   changeTurn,
@@ -18,8 +18,10 @@ import {
 } from "./utils";
 import MovingPiece from "./components/MovingPiece";
 import Board from "./components/Board";
+import { genBoardArray } from "./utils/new/boardArrayHandler";
 
-let fenCode = "r1r5k6r/16/16/16/16/16/16/16/16/16/16/16/16/8O7/16/R1R5K6R";
+let fenCode =
+  "r1r5k6r/pppp12/16/16/16/16/16/16/16/16/16/16/16/8O7/PPPP12/R1R5K6R";
 //"rnmgboaqkcjbgmnr/pppppppppppppppp/16/16/16/16/16/16/16/16/16/16/16/8O7/PPPPPPPPPPPPPPPP/RNMGBOAQKCJBGMNR";
 // let fenCode = "rnbqkbnr/pppppppp/8/8/3Q4/8/PPPPPPPP/RNBQKBNR";
 
@@ -40,6 +42,7 @@ function App() {
   const [castlingArray, setCastlingArray] = useState(
     genCastlingArray(boardArray)
   );
+  const [newBoardArray, setNewBoardArray] = useState(genBoardArray(fenCode));
   function clickSquare(
     { currentPiece, currentRow, currentColumn },
     wasMouseDown
@@ -69,41 +72,15 @@ function App() {
       )
     ) {
       //update castling array
-      if (
-        boardArray[selectedSquare[0]][selectedSquare[1]] === "k" ||
-        boardArray[selectedSquare[0]][selectedSquare[1]] === "K"
-      ) {
-        setCastlingArray(
-          updateCastlingArray(
-            selectedSquare[0],
-            selectedSquare[1],
-            true,
-            castlingArray
-          )
-        );
-      } else {
-        if (
-          boardArray[selectedSquare[0]][selectedSquare[1]] === "r" ||
-          boardArray[selectedSquare[0]][selectedSquare[1]] === "R"
-        ) {
-          setCastlingArray(
-            updateCastlingArray(
-              selectedSquare[0],
-              selectedSquare[1],
-              false,
-              castlingArray
-            )
-          );
-        }
-        if (
-          boardArray[currentRow][currentColumn] === "r" ||
-          boardArray[currentRow][currentColumn] === "R"
-        ) {
-          setCastlingArray(
-            updateCastlingArray(currentRow, currentColumn, false, castlingArray)
-          );
-        }
-      }
+      setCastlingArray(
+        updateCastlingArray(
+          boardArray,
+          selectedSquare,
+          currentRow,
+          currentColumn,
+          castlingArray
+        )
+      );
       //update enPassant array
       setEnPassantArray(
         updateEnPassantArray(
