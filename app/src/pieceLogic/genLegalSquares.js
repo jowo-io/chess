@@ -2,6 +2,7 @@ import lineLogic from "./lineLogic";
 import flowerLogic from "./flowerLogic";
 import pawnLogic from "./pawnLogic";
 import roseLogic from "./roseLogic";
+import castlingLogic from "./castlingLogic";
 
 function genLegalSquares(
   selectedSquare,
@@ -65,7 +66,7 @@ function genLegalSquares(
         [1, -1],
         [-1, 1],
         [-1, -1],
-      ]);
+      ]).concat(castlingLogic(args, castlingArray));
       break;
     case selectedPiece === "p":
       legalSquareArray = pawnLogic(args, enPassantArray);

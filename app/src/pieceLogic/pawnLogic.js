@@ -61,6 +61,7 @@ function pawnLogic({ selectedSquare, boardArray, turn }, enPassantArray) {
   }
   //check if take diagnol
   if (
+    boardArray[selectedSquare[0] - turnDirection][selectedSquare[1] + 1] &&
     boardArray[selectedSquare[0] - turnDirection][selectedSquare[1] + 1] !==
       0 &&
     isTakeable(
@@ -76,6 +77,7 @@ function pawnLogic({ selectedSquare, boardArray, turn }, enPassantArray) {
   }
 
   if (
+    boardArray[selectedSquare[0] - turnDirection][selectedSquare[1] - 1] &&
     boardArray[selectedSquare[0] - turnDirection][selectedSquare[1] - 1] !==
       0 &&
     isTakeable(

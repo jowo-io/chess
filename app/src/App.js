@@ -7,6 +7,10 @@ import {
   updateEnPassantArray,
 } from "./enPassantArrayHandler";
 import {
+  genCastlingArray,
+  updateCastlingArray,
+} from "./castlingArrayHandler.js";
+import {
   updateBoardArray,
   changeTurn,
   checkSquareMatch,
@@ -15,8 +19,8 @@ import {
 import MovingPiece from "./components/MovingPiece";
 import Board from "./components/Board";
 
-let fenCode =
-  "rnmgboaqkcjbgmnr/pppppppppppppppp/16/16/16/16/16/16/16/16/16/16/16/8O7/PPPPPPPPPPPPPPPP/RNMGBOAQKCJBGMNR";
+let fenCode = "r1r5k6r/16/16/16/16/16/16/16/16/16/16/16/16/8O7/16/R1R5K6R";
+//"rnmgboaqkcjbgmnr/pppppppppppppppp/16/16/16/16/16/16/16/16/16/16/16/8O7/PPPPPPPPPPPPPPPP/RNMGBOAQKCJBGMNR";
 // let fenCode = "rnbqkbnr/pppppppp/8/8/3Q4/8/PPPPPPPP/RNBQKBNR";
 
 let mouseCurrentX = null;
@@ -32,6 +36,9 @@ function App() {
   const [legalSquareArray, setLegalSquareArray] = useState([]);
   const [enPassantArray, setEnPassantArray] = useState(
     genEnPassantArray(boardArray)
+  );
+  const [castlingArray, setCastlingArray] = useState(
+    genCastlingArray(boardArray)
   );
   function clickSquare(
     { currentPiece, currentRow, currentColumn },
@@ -54,12 +61,50 @@ function App() {
           castlingArray
         )
       );
+      //move piece
     } else if (
       selectedSquare &&
       legalSquareArray.find((value) =>
         checkSquareMatch(currentRow, currentColumn, value)
       )
     ) {
+      //update castling array
+      if (
+        boardArray[selectedSquare[0]][selectedSquare[1]] === "k" ||
+        boardArray[selectedSquare[0]][selectedSquare[1]] === "K"
+      ) {
+        setCastlingArray(
+          updateCastlingArray(
+            selectedSquare[0],
+            selectedSquare[1],
+            true,
+            castlingArray
+          )
+        );
+      } else {
+        if (
+          boardArray[selectedSquare[0]][selectedSquare[1]] === "r" ||
+          boardArray[selectedSquare[0]][selectedSquare[1]] === "R"
+        ) {
+          setCastlingArray(
+            updateCastlingArray(
+              selectedSquare[0],
+              selectedSquare[1],
+              false,
+              castlingArray
+            )
+          );
+        }
+        if (
+          boardArray[currentRow][currentColumn] === "r" ||
+          boardArray[currentRow][currentColumn] === "R"
+        ) {
+          setCastlingArray(
+            updateCastlingArray(currentRow, currentColumn, false, castlingArray)
+          );
+        }
+      }
+      //update enPassant array
       setEnPassantArray(
         updateEnPassantArray(
           boardArray,
@@ -69,6 +114,7 @@ function App() {
           enPassantArray
         )
       );
+      //update board
       setBoardArray(
         updateBoardArray(
           boardArray,
@@ -78,7 +124,9 @@ function App() {
           turn
         )
       );
+      //swap turn
       setTurn(changeTurn(turn));
+      //deselect square
       setSelectedSquare(null);
     }
   }

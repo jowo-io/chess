@@ -19,6 +19,23 @@ p {
   display: inline-block;
 }
 
+.movingPiece {
+  z-index: 1;
+  pointer-events: none;
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  width: 0px;
+  height: 0px;
+}
+
+.movingPiece img {
+  width: 60px;
+  height: auto;
+  margin-left: -20px;
+  margin-top: -20px;
+}
+
 .chessboard {
   margin-left: auto;
   margin-right: auto;
@@ -42,11 +59,9 @@ p {
   position: relative;
 }
 
-.chessboard > div > div.selectedSquare {
-  /* box-shadow: 0px 0px 0px 2px white inset; */
-}
-.chessboard > div > div.legalSquare {
-  /* box-shadow: 0px 0px 0px 1px blue inset; */
+.chessboard img {
+  height: 95%;
+  user-select: none;
 }
 
 .chessboard > div:nth-child(odd) > div:nth-child(even),
@@ -58,28 +73,8 @@ p {
   background: Chocolate !important;
 }
 
-.movingPiece {
-  pointer-events: none;
-  position: absolute;
-  top: -9999px;
-  left: -9999px;
-  width: 0px;
-  height: 0px;
-}
-
-.movingPiece img {
-  width: 60px;
-  height: auto;
-  margin-left: -20px;
-  margin-top: -20px;
-}
-
 .opaque {
   opacity: 60%;
-}
-.chessboard img {
-  height: 95%;
-  user-select: none;
 }
 
 .squareHighlight {
