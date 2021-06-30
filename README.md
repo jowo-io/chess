@@ -13,7 +13,8 @@ Dan:
 - code Rose movement /
 - improve pawn movement /
 - pawns can jump with first move for some reason /
-- add castling
+- add castling ?
+- board colouring should always start white
 - think about check
 - think about promotions
 - domain name

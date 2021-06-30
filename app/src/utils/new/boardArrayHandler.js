@@ -1,6 +1,6 @@
-import { FEN_TO_PIECE_MAP } from "../../constants";
+import { fenInitialStateMap } from "../../constants";
 
-export function genBoardArray(fenCode) {
+export function genNewBoardArray(fenCode) {
   let fenRows = fenCode.split("/");
   let board = [];
   for (let i = 0; i < fenRows.length; i++) {
@@ -17,13 +17,13 @@ export function genBoardArray(fenCode) {
           countNumber = "";
         }
         const fen = fenRows[i][j];
-        const pieceData = FEN_TO_PIECE_MAP[fen];
+        const initialState = fenInitialStateMap[fen];
         row.push({
-          fen: pieceData.FEN,
-          piece: pieceData.PIECE,
-          colour: pieceData.COLOUR,
-          castleable: pieceData.CASTLEABLE,
-          enpassantable: pieceData.ENPASSANTABLE,
+          fen: initialState.fen,
+          piece: initialState.piece,
+          colour: initialState.colour,
+          isCastleable: initialState.isCastleable,
+          enpassantable: initialState.enpassantable,
         });
       }
     }

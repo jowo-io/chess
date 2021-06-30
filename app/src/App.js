@@ -18,7 +18,7 @@ import {
 } from "./utils";
 import MovingPiece from "./components/MovingPiece";
 import Board from "./components/Board";
-import { genBoardArray } from "./utils/new/boardArrayHandler";
+import { genNewBoardArray } from "./utils/new/boardArrayHandler";
 
 let fenCode =
   "r1r5k6r/pppp12/16/16/16/16/16/16/16/16/16/16/16/8O7/PPPP12/R1R5K6R";
@@ -42,7 +42,7 @@ function App() {
   const [castlingArray, setCastlingArray] = useState(
     genCastlingArray(boardArray)
   );
-  const [newBoardArray, setNewBoardArray] = useState(genBoardArray(fenCode));
+  const [newBoardArray, setNewBoardArray] = useState(genNewBoardArray(fenCode));
   function clickSquare(
     { currentPiece, currentRow, currentColumn },
     wasMouseDown
@@ -101,6 +101,7 @@ function App() {
           turn
         )
       );
+
       //swap turn
       setTurn(changeTurn(turn));
       //deselect square

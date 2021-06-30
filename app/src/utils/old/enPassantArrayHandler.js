@@ -30,7 +30,10 @@ export function updateEnPassantArray(
       }
     }
   }
-  if (boardArray[selectedSquare[0]][selectedSquare[1]].toLowerCase() === "p") {
+  if (
+    boardArray[selectedSquare[0]][selectedSquare[1]] !== 0 &&
+    boardArray[selectedSquare[0]][selectedSquare[1]].toLowerCase() === "p"
+  ) {
     //two senarious either was big first move or wasnt
     if (Math.abs(selectedSquare[0] - currentRow) > 1) {
       enPassantArray[selectedSquare[0]][selectedSquare[1]] = 0;
