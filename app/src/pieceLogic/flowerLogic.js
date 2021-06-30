@@ -1,6 +1,11 @@
 import { checkIsTakeable } from "../utils";
+import { EMPTY_SQUARE } from "../constants";
+import get from "lodash.get";
 
-function flowerLogic({ selectedSquare, boardArray, turn }, patternArray) {
+function flowerLogic(
+  { selectedPiece, selectedSquare, boardArray },
+  patternArray
+) {
   let legalSquareArray = [];
   for (let i = 0; i < patternArray.length; i++) {
     // do it by setting x pos and y pos for each thign and testign if within range
@@ -11,9 +16,12 @@ function flowerLogic({ selectedSquare, boardArray, turn }, patternArray) {
       currentXCoords < boardArray.length &&
       currentYCoords > -1 &&
       currentYCoords < boardArray.length &&
-      checkIsTakeable(boardArray[currentXCoords][currentYCoords], turn)
+      checkIsTakeable(
+        boardArray[currentXCoords][currentYCoords],
+        selectedPiece.colour
+      )
     ) {
-      if (boardArray[currentXCoords][currentYCoords] === 0) {
+      if (get(boardArray, [currentXCoords, currentYCoords]) === EMPTY_SQUARE) {
         legalSquareArray.push([currentXCoords, currentYCoords, false]);
       } else {
         legalSquareArray.push([currentXCoords, currentYCoords, true]);

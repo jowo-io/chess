@@ -19,7 +19,8 @@ Dan:
 - think about promotions
 - domain name
 - rename column to square
+- add on board funtion (within range board length -<1)
 
 Jo:
 
-- Checkout React prettier
+- Checkout React prettier /

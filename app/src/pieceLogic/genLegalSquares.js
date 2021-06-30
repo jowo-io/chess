@@ -3,189 +3,185 @@ import flowerLogic from "./flowerLogic";
 import pawnLogic from "./pawnLogic";
 import roseLogic from "./roseLogic";
 import castlingLogic from "./castlingLogic";
+import { PIECES } from "../constants";
+import get from "lodash.get";
 
 function genLegalSquares(selectedSquare, boardArray, turn) {
-  let legalSquareArray = [
-    [4, 4],
-    [5, 2],
-  ];
-  // let selectedPiece = boardArray[selectedSquare[0]][
-  //   selectedSquare[1]
-  // ].toLowerCase();
-  // let legalSquareArray = [];
-  // let args = { selectedSquare, boardArray, turn };
+  let selectedPiece = get(boardArray, [selectedSquare[0], selectedSquare[1]]);
+  let legalSquareArray = [];
+  let args = { selectedPiece, selectedSquare, boardArray };
   //
-  // //main board logic below
-  // switch (true) {
-  //   case selectedPiece === "r":
-  //     legalSquareArray = lineLogic(args, 0, 1).concat(
-  //       lineLogic(args, 0, -1),
-  //       lineLogic(args, 1, 0),
-  //       lineLogic(args, -1, 0)
-  //     );
-  //     break;
-  //   case selectedPiece === "b":
-  //     legalSquareArray = lineLogic(args, 1, 1).concat(
-  //       lineLogic(args, 1, -1),
-  //       lineLogic(args, -1, 1),
-  //       lineLogic(args, -1, -1)
-  //     );
-  //     break;
-  //   case selectedPiece === "q":
-  //     legalSquareArray = lineLogic(args, 0, 1).concat(
-  //       lineLogic(args, 0, -1),
-  //       lineLogic(args, 1, 0),
-  //       lineLogic(args, -1, 0),
-  //       lineLogic(args, 1, 1),
-  //       lineLogic(args, 1, -1),
-  //       lineLogic(args, -1, 1),
-  //       lineLogic(args, -1, -1)
-  //     );
-  //     break;
-  //   case selectedPiece === "n":
-  //     legalSquareArray = flowerLogic(args, [
-  //       [1, 2],
-  //       [-1, 2],
-  //       [1, -2],
-  //       [-1, -2],
-  //       [2, 1],
-  //       [-2, 1],
-  //       [2, -1],
-  //       [-2, -1],
-  //     ]);
-  //     break;
-  //   case selectedPiece === "k":
-  //     legalSquareArray = flowerLogic(args, [
-  //       [0, 1],
-  //       [0, -1],
-  //       [1, 0],
-  //       [-1, 0],
-  //       [1, 1],
-  //       [1, -1],
-  //       [-1, 1],
-  //       [-1, -1],
-  //     ]).concat(castlingLogic(args, castlingArray));
-  //     break;
-  //   case selectedPiece === "p":
-  //     legalSquareArray = pawnLogic(args, enPassantArray);
-  //     break;
-  //   case selectedPiece === "a":
-  //     legalSquareArray = lineLogic(args, 1, 1).concat(
-  //       lineLogic(args, 1, -1),
-  //       lineLogic(args, -1, 1),
-  //       lineLogic(args, -1, -1),
-  //       flowerLogic(args, [
-  //         [1, 2],
-  //         [-1, 2],
-  //         [1, -2],
-  //         [-1, -2],
-  //         [2, 1],
-  //         [-2, 1],
-  //         [2, -1],
-  //         [-2, -1],
-  //       ])
-  //     );
-  //     break;
-  //   case selectedPiece === "c":
-  //     legalSquareArray = lineLogic(args, 0, 1).concat(
-  //       lineLogic(args, 0, -1),
-  //       lineLogic(args, 1, 0),
-  //       lineLogic(args, -1, 0),
-  //       flowerLogic(args, [
-  //         [1, 2],
-  //         [-1, 2],
-  //         [1, -2],
-  //         [-1, -2],
-  //         [2, 1],
-  //         [-2, 1],
-  //         [2, -1],
-  //         [-2, -1],
-  //       ])
-  //     );
-  //     break;
-  //   case selectedPiece === "m":
-  //     legalSquareArray = flowerLogic(args, [
-  //       [0, 2],
-  //       [0, -2],
-  //       [2, 0],
-  //       [-2, 0],
-  //       [1, 1],
-  //       [1, -1],
-  //       [-1, 1],
-  //       [-1, -1],
-  //     ]);
-  //     break;
-  //   case selectedPiece === "g":
-  //     legalSquareArray = flowerLogic(args, [
-  //       [0, 1],
-  //       [0, -1],
-  //       [1, 0],
-  //       [-1, 0],
-  //       [1, 1],
-  //       [1, -1],
-  //       [-1, 1],
-  //       [-1, -1],
-  //       [2, 2],
-  //       [-2, 2],
-  //       [2, -2],
-  //       [-2, -2],
-  //     ]);
-  //     break;
-  //   case selectedPiece === "j":
-  //     legalSquareArray = flowerLogic(args, [
-  //       [1, 2],
-  //       [2, 1],
-  //       [1, 3],
-  //       [2, 3],
-  //       [3, 2],
-  //       [3, 1],
-  //       [3, 2],
-  //       [-1, -2],
-  //       [-2, -1],
-  //       [-1, -3],
-  //       [-2, -3],
-  //       [-3, -2],
-  //       [-3, -1],
-  //       [-3, -2],
-  //       [-2, 1],
-  //       [-1, 2],
-  //       [-1, 3],
-  //       [-2, 3],
-  //       [-3, 2],
-  //       [-3, 1],
-  //       [-3, 2],
-  //       [1, -2],
-  //       [2, -1],
-  //       [1, -3],
-  //       [2, -3],
-  //       [3, -2],
-  //       [3, -1],
-  //       [3, -2],
-  //     ]);
-  //     break;
-  //   case selectedPiece === "o":
-  //     legalSquareArray = roseLogic(args, [
-  //       [1, 2],
-  //       [-1, 2],
-  //       [-2, 1],
-  //       [-2, -1],
-  //       [-1, -2],
-  //       [1, -2],
-  //       [2, -1],
-  //     ]).concat(
-  //       roseLogic(args, [
-  //         [1, 2],
-  //         [2, 1],
-  //         [2, -1],
-  //         [1, -2],
-  //         [-1, -2],
-  //         [-2, -1],
-  //         [-2, 1],
-  //       ])
-  //     );
-  //     break;
-  //   default:
-  // }
+  //main board logic below
+  switch (true) {
+    case selectedPiece.piece === PIECES.ROOK:
+      legalSquareArray = lineLogic(args, 0, 1).concat(
+        lineLogic(args, 0, -1),
+        lineLogic(args, 1, 0),
+        lineLogic(args, -1, 0)
+      );
+      break;
+    case selectedPiece.piece === PIECES.BISHOP:
+      legalSquareArray = lineLogic(args, 1, 1).concat(
+        lineLogic(args, 1, -1),
+        lineLogic(args, -1, 1),
+        lineLogic(args, -1, -1)
+      );
+      break;
+    case selectedPiece.piece === PIECES.QUEEN:
+      legalSquareArray = lineLogic(args, 0, 1).concat(
+        lineLogic(args, 0, -1),
+        lineLogic(args, 1, 0),
+        lineLogic(args, -1, 0),
+        lineLogic(args, 1, 1),
+        lineLogic(args, 1, -1),
+        lineLogic(args, -1, 1),
+        lineLogic(args, -1, -1)
+      );
+      break;
+    case selectedPiece.piece === PIECES.KNIGHT:
+      legalSquareArray = flowerLogic(args, [
+        [1, 2],
+        [-1, 2],
+        [1, -2],
+        [-1, -2],
+        [2, 1],
+        [-2, 1],
+        [2, -1],
+        [-2, -1],
+      ]);
+      break;
+    case selectedPiece.piece === PIECES.KING:
+      legalSquareArray = flowerLogic(args, [
+        [0, 1],
+        [0, -1],
+        [1, 0],
+        [-1, 0],
+        [1, 1],
+        [1, -1],
+        [-1, 1],
+        [-1, -1],
+      ]).concat(castlingLogic(args));
+      break;
+    case selectedPiece.piece === PIECES.PAWN:
+      legalSquareArray = pawnLogic(args);
+      break;
+    case selectedPiece === "a":
+      legalSquareArray = lineLogic(args, 1, 1).concat(
+        lineLogic(args, 1, -1),
+        lineLogic(args, -1, 1),
+        lineLogic(args, -1, -1),
+        flowerLogic(args, [
+          [1, 2],
+          [-1, 2],
+          [1, -2],
+          [-1, -2],
+          [2, 1],
+          [-2, 1],
+          [2, -1],
+          [-2, -1],
+        ])
+      );
+      break;
+    case selectedPiece.piece === PIECES.CHANCELLOR:
+      legalSquareArray = lineLogic(args, 0, 1).concat(
+        lineLogic(args, 0, -1),
+        lineLogic(args, 1, 0),
+        lineLogic(args, -1, 0),
+        flowerLogic(args, [
+          [1, 2],
+          [-1, 2],
+          [1, -2],
+          [-1, -2],
+          [2, 1],
+          [-2, 1],
+          [2, -1],
+          [-2, -1],
+        ])
+      );
+      break;
+    case selectedPiece.piece === PIECES.MOON:
+      legalSquareArray = flowerLogic(args, [
+        [0, 2],
+        [0, -2],
+        [2, 0],
+        [-2, 0],
+        [1, 1],
+        [1, -1],
+        [-1, 1],
+        [-1, -1],
+      ]);
+      break;
+    case selectedPiece.piece === PIECES.GRAVE:
+      legalSquareArray = flowerLogic(args, [
+        [0, 1],
+        [0, -1],
+        [1, 0],
+        [-1, 0],
+        [1, 1],
+        [1, -1],
+        [-1, 1],
+        [-1, -1],
+        [2, 2],
+        [-2, 2],
+        [2, -2],
+        [-2, -2],
+      ]);
+      break;
+    case selectedPiece.piece === PIECES.JESTER:
+      legalSquareArray = flowerLogic(args, [
+        [1, 2],
+        [2, 1],
+        [1, 3],
+        [2, 3],
+        [3, 2],
+        [3, 1],
+        [3, 2],
+        [-1, -2],
+        [-2, -1],
+        [-1, -3],
+        [-2, -3],
+        [-3, -2],
+        [-3, -1],
+        [-3, -2],
+        [-2, 1],
+        [-1, 2],
+        [-1, 3],
+        [-2, 3],
+        [-3, 2],
+        [-3, 1],
+        [-3, 2],
+        [1, -2],
+        [2, -1],
+        [1, -3],
+        [2, -3],
+        [3, -2],
+        [3, -1],
+        [3, -2],
+      ]);
+      break;
+    case selectedPiece.piece === PIECES.ROSE:
+      legalSquareArray = roseLogic(args, [
+        [1, 2],
+        [-1, 2],
+        [-2, 1],
+        [-2, -1],
+        [-1, -2],
+        [1, -2],
+        [2, -1],
+      ]).concat(
+        roseLogic(args, [
+          [1, 2],
+          [2, 1],
+          [2, -1],
+          [1, -2],
+          [-1, -2],
+          [-2, -1],
+          [-2, 1],
+        ])
+      );
+      break;
+    default:
+  }
   return legalSquareArray;
 }
 

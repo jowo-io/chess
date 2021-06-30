@@ -1,13 +1,7 @@
 import cloneDeep from "lodash.clonedeep";
-import get from "lodash.get";
-import set from "lodash.set";
-import {
-  fenInitialStateMap,
-  EMPTY_SQUARE,
-  PIECES,
-  PAWN_DIRECTION,
-} from "../constants";
-import { turnToTurnDirection, checkIsTakeable } from "../utils";
+import { fenInitialStateMap, EMPTY_SQUARE } from "../constants";
+import updatePiecePosition from "./updatePiecePosition";
+import updateEnPassant from "./updateEnPassant";
 
 export function genBoardArray(fenCode) {
   let fenRows = fenCode.split("/");
@@ -43,8 +37,6 @@ export function genBoardArray(fenCode) {
     }
     board.push(row);
   }
-  console.log(board);
-  logBoard(board);
   return board;
 }
 
@@ -55,25 +47,18 @@ export function updateBoardArray(
   currentColumn,
   turn
 ) {
-  const newBoardArray = cloneDeep(boardArray);
-  const movedPiece = newBoardArray[selectedSquare[0]][selectedSquare[1]];
-  set(newBoardArray, [selectedSquare[0], selectedSquare[1]], EMPTY_SQUARE);
-  set(newBoardArray, [currentRow, currentColumn], movedPiece);
-  //need execption for enPassant
-  if (movedPiece.piece === PIECES.PAWN) {
-    for (
-      let i = currentRow;
-      i < newBoardArray.length && i > -1;
-      i = i + PAWN_DIRECTION[turn]
-    ) {
-      if (
-        get(newBoardArray, [i, currentColumn], {}).piece === PIECES.PAWN &&
-        checkIsTakeable(newBoardArray[i][currentColumn], turn)
-      ) {
-        newBoardArray[i][currentColumn] = EMPTY_SQUARE;
-      }
-    }
-  }
+  let newBoardArray = cloneDeep(boardArray);
+  const args = {
+    newBoardArray,
+    selectedSquare,
+    currentRow,
+    currentColumn,
+    turn,
+  };
+  newBoardArray = updateEnPassant(args);
+  newBoardArray = updatePiecePosition(args);
+  logBoard(newBoardArray);
+  console.log(newBoardArray);
   return newBoardArray;
 }
 

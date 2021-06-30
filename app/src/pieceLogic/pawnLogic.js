@@ -1,47 +1,56 @@
 import { turnToTurnDirection, checkIsTakeable } from "../utils";
-
+import get from "lodash.get";
+import { PAWN_STATES, EMPTY_SQUARE, COLOURS } from "../constants";
 //a cluttered mess
-function pawnLogic({ selectedSquare, boardArray, turn }, enPassantArray) {
+function pawnLogic({ selectedPiece, selectedSquare, boardArray }) {
   //set direction pawn moves
-  const turnDirection = turnToTurnDirection(turn);
+  const turnDirection = turnToTurnDirection(selectedPiece.colour);
   //pawn can always move one forward if nothing is in front
   let legalSquareArray = [];
   // move forward one
-  if (boardArray[selectedSquare[0] - turnDirection][selectedSquare[1]] === 0) {
+  if (
+    get(boardArray, [selectedSquare[0] - turnDirection, selectedSquare[1]]) ===
+    EMPTY_SQUARE
+  ) {
     legalSquareArray.push([
       selectedSquare[0] - turnDirection,
       selectedSquare[1],
       false,
     ]);
   }
-  if (enPassantArray[selectedSquare[0]][selectedSquare[1]] === 1) {
-    let halfWay = null;
-    if (turn === "WHITE") {
-      halfWay = Math.floor(boardArray.length / 2) - 1;
-    } else {
+  if (
+    get(boardArray, [selectedSquare[0], selectedSquare[1]]).enpassantable ===
+    PAWN_STATES.CAN_LEAP
+  ) {
+    let halfWay = 0;
+    if (selectedPiece.colour === COLOURS.BLACK) {
       halfWay = Math.floor(boardArray.length / 2);
+    } else {
+      halfWay = Math.floor(boardArray.length / 2) - 1;
     }
-    // first big move can jump over pieces
     for (
       let i = selectedSquare[0] - 1 * turnDirection;
       i !== halfWay;
       i = i - turnDirection
     ) {
-      if (boardArray[i][selectedSquare[1]] === 0) {
+      console.log("i:", i);
+      if (get(boardArray, [i, selectedSquare[1]]) === EMPTY_SQUARE) {
         legalSquareArray.push([i, selectedSquare[1]]);
       } else {
         break;
       }
     }
   }
-  // check if enPassant possible
+  // check if enPassant possible doesn't work atm
   if (selectedSquare[0] < boardArray.length - 3 && selectedSquare[0] > 2) {
     for (
       let j = selectedSquare[0];
       j < boardArray.length && j > -1;
       j = j + turnDirection
     ) {
-      if (enPassantArray[j][selectedSquare[1] - 1] === 3) {
+      if (
+        get(boardArray, [j, selectedSquare[1] - 1]) === PAWN_STATES.JUST_LEAPED
+      ) {
         legalSquareArray.push([
           selectedSquare[0] - turnDirection,
           selectedSquare[1] - 1,
@@ -49,7 +58,9 @@ function pawnLogic({ selectedSquare, boardArray, turn }, enPassantArray) {
         ]);
         break;
       }
-      if (enPassantArray[j][selectedSquare[1] + 1] === 3) {
+      if (
+        get(boardArray, [j, selectedSquare[1] + 1]) === PAWN_STATES.JUST_LEAPED
+      ) {
         legalSquareArray.push([
           selectedSquare[0] - turnDirection,
           selectedSquare[1] + 1,
@@ -61,12 +72,16 @@ function pawnLogic({ selectedSquare, boardArray, turn }, enPassantArray) {
   }
   //check if take diagnol
   if (
-    boardArray[selectedSquare[0] - turnDirection][selectedSquare[1] + 1] &&
-    boardArray[selectedSquare[0] - turnDirection][selectedSquare[1] + 1] !==
-      0 &&
+    get(boardArray, [
+      selectedSquare[0] - turnDirection,
+      selectedSquare[1] + 1,
+    ]) !== EMPTY_SQUARE &&
     checkIsTakeable(
-      boardArray[selectedSquare[0] - turnDirection][selectedSquare[1] + 1],
-      turn
+      get(boardArray, [
+        selectedSquare[0] - turnDirection,
+        selectedSquare[1] + 1,
+      ]),
+      selectedPiece.colour
     )
   ) {
     legalSquareArray.push([
@@ -82,7 +97,7 @@ function pawnLogic({ selectedSquare, boardArray, turn }, enPassantArray) {
       0 &&
     checkIsTakeable(
       boardArray[selectedSquare[0] - turnDirection][selectedSquare[1] - 1],
-      turn
+      selectedPiece.colour
     )
   ) {
     legalSquareArray.push([

@@ -1,27 +1,43 @@
-// 0 - not a pawn, 1 - never moved pawn, 2 - moved but not en Passanably, 3 - moved last turn
-export function updateEnPassantArray(
-  boardArray,
+import get from "lodash.get";
+import set from "lodash.set";
+import { PAWN_STATES } from "../constants";
+
+function updateEnPassant({
+  newBoardArray,
   selectedSquare,
   currentRow,
   currentColumn,
-  enPassantArray
-) {
-  for (let i = 0; i < enPassantArray.length; i++) {
-    for (let j = 0; j < enPassantArray.length; j++) {
-      if (enPassantArray[i][j] === 3) {
-        enPassantArray[i][j] = 2;
+  turn,
+}) {
+  for (let i = 0; i < newBoardArray.length; i++) {
+    for (let j = 0; j < newBoardArray.length; j++) {
+      if (
+        get(newBoardArray, [i, j]).enpassantable === PAWN_STATES.JUST_LEAPED
+      ) {
+        set(newBoardArray, [i, j, "enpassantable"], PAWN_STATES.CANT_LEAP);
       }
     }
   }
-  if (boardArray[selectedSquare[0]][selectedSquare[1]].toLowerCase() === "p") {
+  if (
+    get(newBoardArray, [selectedSquare[0], selectedSquare[1]]).enpassantable ===
+    PAWN_STATES.CAN_LEAP
+  ) {
     //two senarious either was big first move or wasnt
     if (Math.abs(selectedSquare[0] - currentRow) > 1) {
-      enPassantArray[selectedSquare[0]][selectedSquare[1]] = 0;
-      enPassantArray[currentRow][currentColumn] = 3;
+      set(
+        newBoardArray,
+        [selectedSquare[0], selectedSquare[1], "enpassantable"],
+        PAWN_STATES.JUST_LEAPED
+      );
     } else {
-      enPassantArray[selectedSquare[0]][selectedSquare[1]] = 0;
-      enPassantArray[currentRow][currentColumn] = 2;
+      set(
+        newBoardArray,
+        [selectedSquare[0], selectedSquare[1], "enpassantable"],
+        PAWN_STATES.CANT_LEAP
+      );
     }
   }
-  return enPassantArray;
+  return newBoardArray;
 }
+
+export default updateEnPassant;

@@ -4,7 +4,7 @@ import genLegalSquareArray from "./pieceLogic/genLegalSquares";
 import { changeTurn, checkSquareMatch, checkIsTakeable } from "./utils";
 import MovingPiece from "./components/MovingPiece";
 import Board from "./components/Board";
-import { genBoardArray, updateBoardArray } from "./utils/boardArrayHandler";
+import { genBoardArray, updateBoardArray } from "./utils/boardArrayManager";
 import { COLOURS } from "./constants";
 
 // let fenCode =

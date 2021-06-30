@@ -1,6 +1,8 @@
 import { isOpposite, sumArray } from "../utils";
+import { EMPTY_SQUARE } from "../constants";
+import get from "lodash.get";
 
-function roseLogic({ selectedSquare, boardArray, turn }, shiftArray) {
+function roseLogic({ selectedPiece, selectedSquare, boardArray }, shiftArray) {
   const permutationArray = [
     [1, 1, true],
     [1, -1, true],
@@ -31,10 +33,15 @@ function roseLogic({ selectedSquare, boardArray, turn }, shiftArray) {
       ) {
         break;
       } else {
-        if (boardArray[currentSquare[0]][currentSquare[1]] === 0) {
+        if (
+          get(boardArray, [currentSquare[0], currentSquare[1]]) === EMPTY_SQUARE
+        ) {
           legalSquareArray.push([currentSquare[0], currentSquare[1]]);
         } else if (
-          isOpposite(boardArray[currentSquare[0]][currentSquare[1]], turn)
+          isOpposite(
+            get(boardArray, [currentSquare[0], currentSquare[1]]),
+            selectedPiece.colour
+          )
         ) {
           legalSquareArray.push([currentSquare[0], currentSquare[1], true]);
           break;
