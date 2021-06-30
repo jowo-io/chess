@@ -7,14 +7,13 @@ import Board from "./components/Board";
 import { genBoardArray, updateBoardArray } from "./utils/boardArrayManager";
 import { COLOURS } from "./constants";
 
-// let fenCode =
-//   "r1r5k6r/pppp12/16/16/16/16/16/16/16/16/16/16/16/8O7/PPPP12/R1R5K6R";
+let fenCode =
+  "r1r5k6r/pppp12/16/16/16/16/16/16/16/16/16/16/16/8O7/PPPP12/R1R5K6R";
 //"rnmgboaqkcjbgmnr/pppppppppppppppp/16/16/16/16/16/16/16/16/16/16/16/8O7/PPPPPPPPPPPPPPPP/RNMGBOAQKCJBGMNR";
-let fenCode = "rnbqkbnr/pppppppp/8/8/3Q4/8/PPPPPPPP/RNBQKBNR";
+// let fenCode = "rnbqkbnr/pppppppp/8/8/3Q4/8/PPPPPPPP/RNBQKBNR";
 
 let mouseCurrentX = null;
 let mouseCurrentY = null;
-let castlingArray = [true, true, true, true];
 
 function App() {
   const [mousePos, setMousePos] = useState([0, 0]);

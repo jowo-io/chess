@@ -1,42 +1,40 @@
 // 0 - not a king/rook, 1 - king never moved, 2 - rook never moved or taken,
+import { PIECES } from "../constants";
+import get from "lodash.get";
+import set from "lodash.set";
 
-export function updateCastlingArray(
-  boardArray,
+function updateCastling({
+  newBoardArray,
   selectedSquare,
   currentRow,
   currentColumn,
-  castlingArray
-) {
-  function settingZeros(movedRow, movedColumn, isKing) {
-    if (castlingArray[movedRow][movedColumn] !== 0) {
-      if (isKing) {
-        for (let i = 0; i < castlingArray.length; i++) {
-          castlingArray[movedRow][i] = 0;
-        }
-      } else {
-        castlingArray[movedRow][movedColumn] = 0;
-      }
+  turn,
+  movedPiece,
+}) {
+  console.log(movedPiece);
+  if (movedPiece.piece === PIECES.KING) {
+    for (let i = 0; i < newBoardArray.length; i++) {
+      if (
+        get(newBoardArray, [selectedSquare[0], i]).piece === PIECES.ROOK ||
+        get(newBoardArray, [selectedSquare[0], i]).piece === PIECES.KING
+      )
+        set(newBoardArray, [selectedSquare[0], i, "isCastleable"], false);
     }
-  }
-  if (
-    boardArray[selectedSquare[0]][selectedSquare[1]] === "k" ||
-    boardArray[selectedSquare[0]][selectedSquare[1]] === "K"
-  ) {
-    settingZeros(currentRow, currentColumn, true);
   } else {
-    if (
-      boardArray[selectedSquare[0]][selectedSquare[1]] === "r" ||
-      boardArray[selectedSquare[0]][selectedSquare[1]] === "R"
-    ) {
-      settingZeros(selectedSquare[0], selectedSquare[1], false);
+    if (movedPiece.piece === PIECES.ROOK) {
+      console.log("moved");
+      set(
+        newBoardArray,
+        [selectedSquare[0], selectedSquare[1], "isCastleable"],
+        false
+      );
     }
-    if (
-      boardArray[currentRow][currentColumn] === "r" ||
-      boardArray[currentRow][currentColumn] === "R"
-    ) {
-      settingZeros(currentRow, currentColumn, false);
+    if (get(newBoardArray, [currentRow, currentColumn]).piece === PIECES.ROOK) {
+      console.log("taken");
+      set(newBoardArray, [currentRow, currentColumn, "isCastleable"], false);
     }
   }
-  console.log(castlingArray);
-  return castlingArray;
+  return newBoardArray;
 }
+
+export default updateCastling;

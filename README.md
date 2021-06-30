@@ -21,6 +21,8 @@ Dan:
 - rename column to square
 - add on board funtion (within range board length -<1)
 
+- add auto generating letter/number square names
+
 Jo:
 
 - Checkout React prettier /

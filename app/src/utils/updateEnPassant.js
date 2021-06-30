@@ -8,6 +8,7 @@ function updateEnPassant({
   currentRow,
   currentColumn,
   turn,
+  movedPiece,
 }) {
   for (let i = 0; i < newBoardArray.length; i++) {
     for (let j = 0; j < newBoardArray.length; j++) {
@@ -18,10 +19,7 @@ function updateEnPassant({
       }
     }
   }
-  if (
-    get(newBoardArray, [selectedSquare[0], selectedSquare[1]]).enpassantable ===
-    PAWN_STATES.CAN_LEAP
-  ) {
+  if (movedPiece.enpassantable === PAWN_STATES.CAN_LEAP) {
     //two senarious either was big first move or wasnt
     if (Math.abs(selectedSquare[0] - currentRow) > 1) {
       set(

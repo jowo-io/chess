@@ -9,8 +9,8 @@ function updatePiecePosition({
   currentRow,
   currentColumn,
   turn,
+  movedPiece,
 }) {
-  const movedPiece = newBoardArray[selectedSquare[0]][selectedSquare[1]];
   set(newBoardArray, [selectedSquare[0], selectedSquare[1]], EMPTY_SQUARE);
   set(newBoardArray, [currentRow, currentColumn], movedPiece);
   //need execption for enPassant

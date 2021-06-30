@@ -1,7 +1,9 @@
 import cloneDeep from "lodash.clonedeep";
+import get from "lodash.get";
 import { fenInitialStateMap, EMPTY_SQUARE } from "../constants";
 import updatePiecePosition from "./updatePiecePosition";
 import updateEnPassant from "./updateEnPassant";
+import updateCastling from "./updateCastling";
 
 export function genBoardArray(fenCode) {
   let fenRows = fenCode.split("/");
@@ -48,14 +50,17 @@ export function updateBoardArray(
   turn
 ) {
   let newBoardArray = cloneDeep(boardArray);
+  const movedPiece = get(newBoardArray, [selectedSquare[0], selectedSquare[1]]);
   const args = {
     newBoardArray,
     selectedSquare,
     currentRow,
     currentColumn,
     turn,
+    movedPiece,
   };
   newBoardArray = updateEnPassant(args);
+  newBoardArray = updateCastling(args);
   newBoardArray = updatePiecePosition(args);
   logBoard(newBoardArray);
   console.log(newBoardArray);
