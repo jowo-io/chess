@@ -1,6 +1,6 @@
 import { PIECE_FEN_TYPES } from "../constants";
 
-const PIECE_IMAGES = {
+const pieceImages = {
   [PIECE_FEN_TYPES.whiteKnight]: require("../assets/whiteKnight.png").default,
   [PIECE_FEN_TYPES.whiteRook]: require("../assets/whiteRook.png").default,
   [PIECE_FEN_TYPES.whiteKing]: require("../assets/whiteKing.png").default,
@@ -31,4 +31,4 @@ const PIECE_IMAGES = {
   [PIECE_FEN_TYPES.blackJester]: require("../assets/blackJester.png").default,
 };
 
-export default PIECE_IMAGES;
+export default pieceImages;

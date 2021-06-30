@@ -1,4 +1,4 @@
-import { isTakeable } from "../utils";
+import { checkIsTakeable } from "../utils";
 
 function lineLogic(
   { selectedSquare, boardArray, turn },
@@ -15,7 +15,7 @@ function lineLogic(
     let currentPiece = boardArray[y][x];
     if (currentPiece === 0) {
       legalSquareArray.push([y, x, false]);
-    } else if (isTakeable(currentPiece, turn)) {
+    } else if (checkIsTakeable(currentPiece, turn)) {
       legalSquareArray.push([y, x, true]);
       break;
     } else {

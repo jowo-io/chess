@@ -40,6 +40,7 @@ export const PIECES = {
   CHANCELLOR: "CHANCELLOR",
   ROSE: "ROSE",
 };
+export const EMPTY_SQUARE = 0;
 
 export const COLOURS = {
   BLACK: "BLACK",
@@ -50,6 +51,11 @@ export const PAWN_STATES = {
   JUST_LEAPED: "JUST_LEAPED",
   CAN_LEAP: "CAN_LEAP",
   CANT_LEAP: "CANT_LEAP",
+};
+
+export const PAWN_DIRECTION = {
+  [COLOURS.WHITE]: 1,
+  [COLOURS.BLACK]: -1,
 };
 
 export const fenInitialStateMap = {
@@ -84,7 +90,7 @@ export const fenInitialStateMap = {
     fen: PIECE_FEN_TYPES.blackPawn,
     piece: PIECES.PAWN,
     colour: COLOURS.BLACK,
-    ENPASSANTABLE: PAWN_STATES.CAN_LEAP,
+    enpassantable: PAWN_STATES.CAN_LEAP,
   },
   [PIECE_FEN_TYPES.blackMoon]: {
     fen: PIECE_FEN_TYPES.blackMoon,
@@ -147,7 +153,7 @@ export const fenInitialStateMap = {
     fen: PIECE_FEN_TYPES.whitePawn,
     piece: PIECES.PAWN,
     colour: COLOURS.WHITE,
-    ENPASSANTABLE: PAWN_STATES.CAN_LEAP,
+    enpassantable: PAWN_STATES.CAN_LEAP,
   },
   [PIECE_FEN_TYPES.whiteMoon]: {
     fen: PIECE_FEN_TYPES.whiteMoon,

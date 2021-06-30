@@ -1,6 +1,15 @@
-import { fenInitialStateMap } from "../../constants";
+import cloneDeep from "lodash.clonedeep";
+import get from "lodash.get";
+import set from "lodash.set";
+import {
+  fenInitialStateMap,
+  EMPTY_SQUARE,
+  PIECES,
+  PAWN_DIRECTION,
+} from "../constants";
+import { turnToTurnDirection, checkIsTakeable } from "../utils";
 
-export function genNewBoardArray(fenCode) {
+export function genBoardArray(fenCode) {
   let fenRows = fenCode.split("/");
   let board = [];
   for (let i = 0; i < fenRows.length; i++) {
@@ -12,7 +21,7 @@ export function genNewBoardArray(fenCode) {
       } else {
         if (countNumber !== "") {
           for (let k = 0; k < parseInt(countNumber); k++) {
-            row.push(0);
+            row.push(EMPTY_SQUARE);
           }
           countNumber = "";
         }
@@ -29,7 +38,7 @@ export function genNewBoardArray(fenCode) {
     }
     if (countNumber !== "") {
       for (let k = 0; k < parseInt(countNumber); k++) {
-        row.push(0);
+        row.push(EMPTY_SQUARE);
       }
     }
     board.push(row);
@@ -37,6 +46,35 @@ export function genNewBoardArray(fenCode) {
   console.log(board);
   logBoard(board);
   return board;
+}
+
+export function updateBoardArray(
+  boardArray,
+  selectedSquare,
+  currentRow,
+  currentColumn,
+  turn
+) {
+  const newBoardArray = cloneDeep(boardArray);
+  const movedPiece = newBoardArray[selectedSquare[0]][selectedSquare[1]];
+  set(newBoardArray, [selectedSquare[0], selectedSquare[1]], EMPTY_SQUARE);
+  set(newBoardArray, [currentRow, currentColumn], movedPiece);
+  //need execption for enPassant
+  if (movedPiece.piece === PIECES.PAWN) {
+    for (
+      let i = currentRow;
+      i < newBoardArray.length && i > -1;
+      i = i + PAWN_DIRECTION[turn]
+    ) {
+      if (
+        get(newBoardArray, [i, currentColumn], {}).piece === PIECES.PAWN &&
+        checkIsTakeable(newBoardArray[i][currentColumn], turn)
+      ) {
+        newBoardArray[i][currentColumn] = EMPTY_SQUARE;
+      }
+    }
+  }
+  return newBoardArray;
 }
 
 function logBoard(board) {

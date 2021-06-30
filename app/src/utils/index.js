@@ -1,3 +1,5 @@
+import { COLOURS } from "../constants";
+
 export function checkSquareMatch(row, col, square) {
   if (row === square[0] && col === square[1]) {
     return true;
@@ -7,8 +9,8 @@ export function checkSquareMatch(row, col, square) {
 
 export function isOpposite(piece, turn) {
   if (
-    (piece !== piece.toLowerCase() && turn === "Black") ||
-    (piece === piece.toLowerCase() && turn === "White")
+    (piece !== piece.toLowerCase() && turn === COLOURS.BLACK) ||
+    (piece === piece.toLowerCase() && turn === COLOURS.WHITE)
   ) {
     return true;
   } else {
@@ -36,64 +38,27 @@ export function checkSquareMatchTemp(row, col, square) {
   return false;
 }
 
-export function isTakeable(currentPiece, turn) {
-  if (currentPiece === 0) {
-    return true;
-  } else if (
-    (currentPiece !== currentPiece.toLowerCase() && turn === "Black") ||
-    (currentPiece === currentPiece.toLowerCase() && turn === "White")
-  ) {
-    return true;
-  } else {
-    return false;
-  }
+export function checkIsTakeable(currentPiece, turn) {
+  return (
+    !currentPiece ||
+    (currentPiece.colour === COLOURS.WHITE && turn === COLOURS.BLACK) ||
+    (currentPiece.colour === COLOURS.BLACK && turn === COLOURS.WHITE)
+  );
 }
 
 export function turnToTurnDirection(turn) {
-  let turnDirection = null;
-  if (turn === "White") {
-    turnDirection = 1;
+  if (turn === COLOURS.WHITE) {
+    return 1;
   } else {
-    turnDirection = -1;
+    return -1;
   }
-  return turnDirection;
-}
-
-export function updateBoardArray(
-  boardArray,
-  selectedSquare,
-  currentRow,
-  currentColumn,
-  turn
-) {
-  const movedPiece = boardArray[selectedSquare[0]][selectedSquare[1]];
-  boardArray[selectedSquare[0]][selectedSquare[1]] = 0;
-  boardArray[currentRow][currentColumn] = movedPiece;
-  //need execption for enPassant
-  const turnDirection = turnToTurnDirection(turn);
-  if (movedPiece.toLowerCase() === "p") {
-    for (
-      let i = currentRow;
-      i < boardArray.length && i > -1;
-      i = i + turnDirection
-    ) {
-      if (
-        (boardArray[i][currentColumn] === "p" ||
-          boardArray[i][currentColumn] === "P") &&
-        isTakeable(boardArray[i][currentColumn], turn)
-      ) {
-        boardArray[i][currentColumn] = 0;
-      }
-    }
-  }
-  return boardArray;
 }
 
 export function changeTurn(turn) {
-  if (turn === "White") {
-    return "Black";
+  if (turn === COLOURS.WHITE) {
+    return COLOURS.BLACK;
   } else {
-    return "White";
+    return COLOURS.WHITE;
   }
 }
 
@@ -138,13 +103,4 @@ export function getSquareInfo(
     isCheck,
     isSelected,
   };
-}
-
-export function getValueFrom3dArray(x, y, array) {
-  try {
-    return array[x][y];
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
 }

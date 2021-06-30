@@ -1,48 +1,28 @@
 import "./App.css";
 import { useState } from "react";
-import { fenToBoard, boardToFen } from "./utils/old/fenCodeHandler";
 import genLegalSquareArray from "./pieceLogic/genLegalSquares";
-import {
-  genEnPassantArray,
-  updateEnPassantArray,
-} from "./utils/old/enPassantArrayHandler";
-import {
-  genCastlingArray,
-  updateCastlingArray,
-} from "./utils/old/castlingArrayHandler";
-import {
-  updateBoardArray,
-  changeTurn,
-  checkSquareMatch,
-  isTakeable,
-} from "./utils";
+import { changeTurn, checkSquareMatch, checkIsTakeable } from "./utils";
 import MovingPiece from "./components/MovingPiece";
 import Board from "./components/Board";
-import { genNewBoardArray } from "./utils/new/boardArrayHandler";
+import { genBoardArray, updateBoardArray } from "./utils/boardArrayHandler";
+import { COLOURS } from "./constants";
 
-let fenCode =
-  "r1r5k6r/pppp12/16/16/16/16/16/16/16/16/16/16/16/8O7/PPPP12/R1R5K6R";
+// let fenCode =
+//   "r1r5k6r/pppp12/16/16/16/16/16/16/16/16/16/16/16/8O7/PPPP12/R1R5K6R";
 //"rnmgboaqkcjbgmnr/pppppppppppppppp/16/16/16/16/16/16/16/16/16/16/16/8O7/PPPPPPPPPPPPPPPP/RNMGBOAQKCJBGMNR";
-// let fenCode = "rnbqkbnr/pppppppp/8/8/3Q4/8/PPPPPPPP/RNBQKBNR";
+let fenCode = "rnbqkbnr/pppppppp/8/8/3Q4/8/PPPPPPPP/RNBQKBNR";
 
 let mouseCurrentX = null;
 let mouseCurrentY = null;
 let castlingArray = [true, true, true, true];
 
 function App() {
-  const [boardArray, setBoardArray] = useState(fenToBoard(fenCode));
   const [mousePos, setMousePos] = useState([0, 0]);
-  const [turn, setTurn] = useState("White");
+  const [turn, setTurn] = useState(COLOURS.WHITE);
   const [selectedSquare, setSelectedSquare] = useState(null);
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [legalSquareArray, setLegalSquareArray] = useState([]);
-  const [enPassantArray, setEnPassantArray] = useState(
-    genEnPassantArray(boardArray)
-  );
-  const [castlingArray, setCastlingArray] = useState(
-    genCastlingArray(boardArray)
-  );
-  const [newBoardArray, setNewBoardArray] = useState(genNewBoardArray(fenCode));
+  const [boardArray, setBoardArray] = useState(genBoardArray(fenCode));
   function clickSquare(
     { currentPiece, currentRow, currentColumn },
     wasMouseDown
@@ -53,18 +33,11 @@ function App() {
       wasMouseDown
     ) {
       setSelectedSquare(null);
-    } else if (wasMouseDown && !isTakeable(currentPiece, turn)) {
+    } else if (wasMouseDown && !checkIsTakeable(currentPiece, turn)) {
       setSelectedSquare([currentRow, currentColumn]);
       setLegalSquareArray(
-        genLegalSquareArray(
-          [currentRow, currentColumn],
-          boardArray,
-          turn,
-          enPassantArray,
-          castlingArray
-        )
+        genLegalSquareArray([currentRow, currentColumn], boardArray, turn)
       );
-      //move piece
     } else if (
       selectedSquare &&
       legalSquareArray.find((value) =>
@@ -72,26 +45,25 @@ function App() {
       )
     ) {
       //update castling array
-      setCastlingArray(
-        updateCastlingArray(
-          boardArray,
-          selectedSquare,
-          currentRow,
-          currentColumn,
-          castlingArray
-        )
-      );
-      //update enPassant array
-      setEnPassantArray(
-        updateEnPassantArray(
-          boardArray,
-          selectedSquare,
-          currentRow,
-          currentColumn,
-          enPassantArray
-        )
-      );
-      //update board
+      // setCastlingArray(
+      //   updateCastlingArray(
+      //     boardArray,
+      //     selectedSquare,
+      //     currentRow,
+      //     currentColumn,
+      //     castlingArray
+      //   )
+      // );
+      // //update enPassant array
+      // setEnPassantArray(
+      //   updateEnPassantArray(
+      //     boardArray,
+      //     selectedSquare,
+      //     currentRow,
+      //     currentColumn,
+      //     enPassantArray
+      //   )
+      // );
       setBoardArray(
         updateBoardArray(
           boardArray,
@@ -101,7 +73,6 @@ function App() {
           turn
         )
       );
-
       //swap turn
       setTurn(changeTurn(turn));
       //deselect square
@@ -150,7 +121,6 @@ function App() {
           }}
         />
       </div>
-      <p>Fen Code: {boardToFen(boardArray)}</p>
     </div>
   );
 }

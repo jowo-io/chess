@@ -1,15 +1,11 @@
-import PIECE_IMAGES from "../constants/pieceImages";
-import { getValueFrom3dArray } from "../utils";
+import pieceImages from "../constants/pieceImages";
+import get from "lodash.get";
 
 function MovingPiece({ x, y, selectedSquare, boardArray }) {
-  const piece = getValueFrom3dArray(
-    selectedSquare[0],
-    selectedSquare[1],
-    boardArray
-  );
+  const piece = get(boardArray, [selectedSquare[0], selectedSquare[1]]);
   return (
     <div className="movingPiece" style={{ left: x, top: y }}>
-      <img src={PIECE_IMAGES[piece]} alt="" />
+      <img src={pieceImages[piece.fen]} alt="" />
     </div>
   );
 }

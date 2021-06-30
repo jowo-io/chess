@@ -1,4 +1,4 @@
-import { turnToTurnDirection, isTakeable } from "../utils";
+import { turnToTurnDirection, checkIsTakeable } from "../utils";
 
 //a cluttered mess
 function pawnLogic({ selectedSquare, boardArray, turn }, enPassantArray) {
@@ -16,7 +16,7 @@ function pawnLogic({ selectedSquare, boardArray, turn }, enPassantArray) {
   }
   if (enPassantArray[selectedSquare[0]][selectedSquare[1]] === 1) {
     let halfWay = null;
-    if (turn === "White") {
+    if (turn === "WHITE") {
       halfWay = Math.floor(boardArray.length / 2) - 1;
     } else {
       halfWay = Math.floor(boardArray.length / 2);
@@ -64,7 +64,7 @@ function pawnLogic({ selectedSquare, boardArray, turn }, enPassantArray) {
     boardArray[selectedSquare[0] - turnDirection][selectedSquare[1] + 1] &&
     boardArray[selectedSquare[0] - turnDirection][selectedSquare[1] + 1] !==
       0 &&
-    isTakeable(
+    checkIsTakeable(
       boardArray[selectedSquare[0] - turnDirection][selectedSquare[1] + 1],
       turn
     )
@@ -80,7 +80,7 @@ function pawnLogic({ selectedSquare, boardArray, turn }, enPassantArray) {
     boardArray[selectedSquare[0] - turnDirection][selectedSquare[1] - 1] &&
     boardArray[selectedSquare[0] - turnDirection][selectedSquare[1] - 1] !==
       0 &&
-    isTakeable(
+    checkIsTakeable(
       boardArray[selectedSquare[0] - turnDirection][selectedSquare[1] - 1],
       turn
     )

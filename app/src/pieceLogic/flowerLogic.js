@@ -1,4 +1,4 @@
-import { isTakeable } from "../utils";
+import { checkIsTakeable } from "../utils";
 
 function flowerLogic({ selectedSquare, boardArray, turn }, patternArray) {
   let legalSquareArray = [];
@@ -11,7 +11,7 @@ function flowerLogic({ selectedSquare, boardArray, turn }, patternArray) {
       currentXCoords < boardArray.length &&
       currentYCoords > -1 &&
       currentYCoords < boardArray.length &&
-      isTakeable(boardArray[currentXCoords][currentYCoords], turn)
+      checkIsTakeable(boardArray[currentXCoords][currentYCoords], turn)
     ) {
       if (boardArray[currentXCoords][currentYCoords] === 0) {
         legalSquareArray.push([currentXCoords, currentYCoords, false]);

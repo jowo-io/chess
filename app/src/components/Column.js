@@ -1,4 +1,4 @@
-import PIECE_IMAGES from "../constants/pieceImages";
+import pieceImages from "../constants/pieceImages";
 import { checkSquareMatch, getSquareInfo } from "../utils";
 import movableHighlight from "../assets/movableHighlight.png";
 import takeableHighlight from "../assets/takeableHighlight.png";
@@ -25,7 +25,6 @@ function Column({
   const currentSquareDragMatch =
     selectedSquare &&
     checkSquareMatch(currentRow, currentColumn, selectedSquare);
-
   return (
     <div
       className={className}
@@ -49,9 +48,9 @@ function Column({
         {isLegal && <img src={movableHighlight} alt="" />}
       </div>
       {currentPiece !== 0 && !currentSquareDragMatch ? (
-        <img src={PIECE_IMAGES[currentPiece]} alt="" />
+        <img src={pieceImages[currentPiece.fen]} alt="" />
       ) : (
-        <img className="opaque" src={PIECE_IMAGES[currentPiece]} alt="" />
+        <img className="opaque" src={pieceImages[currentPiece.fen]} alt="" />
       )}
     </div>
   );
