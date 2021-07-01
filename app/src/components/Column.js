@@ -47,10 +47,12 @@ function Column({
         {isTakeable && <img src={takeableHighlight} alt="" />}
         {isLegal && <img src={movableHighlight} alt="" />}
       </div>
-      {currentPiece !== 0 && !currentSquareDragMatch ? (
-        <img src={pieceImages[currentPiece.fen]} alt="" />
-      ) : (
-        <img className="opaque" src={pieceImages[currentPiece.fen]} alt="" />
+      {pieceImages[currentPiece.fen] && (
+        <img
+          src={pieceImages[currentPiece.fen]}
+          alt=""
+          className={currentSquareDragMatch ? "opaque" : ""}
+        />
       )}
     </div>
   );

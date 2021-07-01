@@ -1,6 +1,6 @@
 import { turnToTurnDirection, checkIsTakeable } from "../utils";
 import get from "lodash.get";
-import { PAWN_STATES, EMPTY_SQUARE, COLOURS } from "../constants";
+import { PAWN_STATES, PIECES, COLOURS } from "../constants";
 //a cluttered mess
 function pawnLogic({ selectedPiece, selectedSquare, boardArray }) {
   //set direction pawn moves
@@ -9,8 +9,11 @@ function pawnLogic({ selectedPiece, selectedSquare, boardArray }) {
   let legalSquareArray = [];
   // move forward one
   if (
-    get(boardArray, [selectedSquare[0] - turnDirection, selectedSquare[1]]) ===
-    EMPTY_SQUARE
+    get(boardArray, [
+      selectedSquare[0] - turnDirection,
+      selectedSquare[1],
+      "piece",
+    ]) === PIECES.EMPTY
   ) {
     legalSquareArray.push([
       selectedSquare[0] - turnDirection,
@@ -34,7 +37,7 @@ function pawnLogic({ selectedPiece, selectedSquare, boardArray }) {
       i = i - turnDirection
     ) {
       console.log("i:", i);
-      if (get(boardArray, [i, selectedSquare[1]]) === EMPTY_SQUARE) {
+      if (get(boardArray, [i, selectedSquare[1], "piece"]) === PIECES.EMPTY) {
         legalSquareArray.push([i, selectedSquare[1]]);
       } else {
         break;
@@ -75,7 +78,8 @@ function pawnLogic({ selectedPiece, selectedSquare, boardArray }) {
     get(boardArray, [
       selectedSquare[0] - turnDirection,
       selectedSquare[1] + 1,
-    ]) !== EMPTY_SQUARE &&
+      "piece",
+    ]) !== PIECES.EMPTY &&
     checkIsTakeable(
       get(boardArray, [
         selectedSquare[0] - turnDirection,
@@ -92,11 +96,16 @@ function pawnLogic({ selectedPiece, selectedSquare, boardArray }) {
   }
 
   if (
-    boardArray[selectedSquare[0] - turnDirection][selectedSquare[1] - 1] &&
-    boardArray[selectedSquare[0] - turnDirection][selectedSquare[1] - 1] !==
-      0 &&
+    get(boardArray, [
+      selectedSquare[0] - turnDirection,
+      selectedSquare[1] - 1,
+      "piece",
+    ]) !== PIECES.EMPTY &&
     checkIsTakeable(
-      boardArray[selectedSquare[0] - turnDirection][selectedSquare[1] - 1],
+      get(boardArray, [
+        selectedSquare[0] - turnDirection,
+        selectedSquare[1] - 1,
+      ]),
       selectedPiece.colour
     )
   ) {

@@ -27,6 +27,7 @@ export const PIECE_FEN_TYPES = {
 };
 
 export const PIECES = {
+  EMPTY: "EMPTY",
   ROOK: "ROOK",
   KNIGHT: "KNIGHT",
   BISHOP: "BISHOP",
@@ -40,7 +41,7 @@ export const PIECES = {
   CHANCELLOR: "CHANCELLOR",
   ROSE: "ROSE",
 };
-export const EMPTY_SQUARE = 0;
+export const EMPTY_ = 0;
 
 export const COLOURS = {
   BLACK: "BLACK",

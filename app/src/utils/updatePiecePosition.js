@@ -1,13 +1,15 @@
 import get from "lodash.get";
 import set from "lodash.set";
-import { EMPTY_SQUARE, PIECES, PAWN_DIRECTION } from "../constants";
+import { PIECES, PAWN_DIRECTION } from "../constants";
 import { checkIsTakeable } from "../utils";
 
 function updatePiecePosition(
   newBoardArray,
   { selectedSquare, currentRow, currentColumn, turn, movedPiece }
 ) {
-  set(newBoardArray, [selectedSquare[0], selectedSquare[1]], EMPTY_SQUARE);
+  set(newBoardArray, [selectedSquare[0], selectedSquare[1]], {
+    piece: PIECES.EMPTY,
+  });
   set(newBoardArray, [currentRow, currentColumn], movedPiece);
   //check and movement for enPassant
   if (movedPiece.piece === PIECES.PAWN) {
@@ -20,7 +22,7 @@ function updatePiecePosition(
         get(newBoardArray, [i, currentColumn], {}).piece === PIECES.PAWN &&
         checkIsTakeable(newBoardArray[i][currentColumn], turn)
       ) {
-        newBoardArray[i][currentColumn] = EMPTY_SQUARE;
+        set(newBoardArray, [i, currentColumn], { piece: PIECES.EMPTY });
       }
     }
   }
@@ -37,7 +39,7 @@ function updatePiecePosition(
             [selectedSquare[0], currentColumn - 1],
             get(newBoardArray, [selectedSquare[0], i])
           );
-          set(newBoardArray, [selectedSquare[0], i], EMPTY_SQUARE);
+          set(newBoardArray, [selectedSquare[0], i], { piece: PIECES.EMPTY });
           break;
         }
       }
@@ -50,7 +52,7 @@ function updatePiecePosition(
             [selectedSquare[0], currentColumn + 1],
             get(newBoardArray, [selectedSquare[0], i])
           );
-          set(newBoardArray, [selectedSquare[0], i], EMPTY_SQUARE);
+          set(newBoardArray, [selectedSquare[0], i], { piece: PIECES.EMPTY });
           break;
         }
       }

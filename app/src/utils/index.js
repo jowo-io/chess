@@ -1,4 +1,4 @@
-import { COLOURS } from "../constants";
+import { COLOURS, PIECES } from "../constants";
 
 export function checkSquareMatch(row, col, square) {
   if (row === square[0] && col === square[1]) {
@@ -7,16 +7,6 @@ export function checkSquareMatch(row, col, square) {
   return false;
 }
 
-export function isOpposite(piece, turn) {
-  if (
-    (piece !== piece.toLowerCase() && turn === COLOURS.BLACK) ||
-    (piece === piece.toLowerCase() && turn === COLOURS.WHITE)
-  ) {
-    return true;
-  } else {
-    return false;
-  }
-}
 export function sumArray(array1, array2, multiply1, multiply2, isFlip) {
   if (isFlip) {
     return [
@@ -40,7 +30,7 @@ export function checkSquareMatchTemp(row, col, square) {
 
 export function checkIsTakeable(currentPiece, turn) {
   return (
-    !currentPiece ||
+    currentPiece.piece === PIECES.EMPTY ||
     (currentPiece.colour === COLOURS.WHITE && turn === COLOURS.BLACK) ||
     (currentPiece.colour === COLOURS.BLACK && turn === COLOURS.WHITE)
   );

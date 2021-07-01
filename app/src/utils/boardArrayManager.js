@@ -1,6 +1,6 @@
 import cloneDeep from "lodash.clonedeep";
 import get from "lodash.get";
-import { fenInitialStateMap, EMPTY_SQUARE } from "../constants";
+import { fenInitialStateMap, PIECES } from "../constants";
 import updatePiecePosition from "./updatePiecePosition";
 import updateEnPassant from "./updateEnPassant";
 import updateCastling from "./updateCastling";
@@ -17,7 +17,7 @@ export function genBoardArray(fenCode) {
       } else {
         if (countNumber !== "") {
           for (let k = 0; k < parseInt(countNumber); k++) {
-            row.push(EMPTY_SQUARE);
+            row.push({ piece: PIECES.EMPTY });
           }
           countNumber = "";
         }
@@ -34,7 +34,7 @@ export function genBoardArray(fenCode) {
     }
     if (countNumber !== "") {
       for (let k = 0; k < parseInt(countNumber); k++) {
-        row.push(EMPTY_SQUARE);
+        row.push({ piece: PIECES.EMPTY });
       }
     }
     board.push(row);
@@ -78,7 +78,7 @@ function logBoard(board) {
           ? "Chocolate"
           : "SandyBrown";
       const color = piece.colour === "WHITE" ? "white" : "black";
-      values.push(piece ? `%c ${piece.fen} ` : "%c   ");
+      values.push(piece.fen ? `%c ${piece.fen} ` : "%c   ");
       styles.push(
         piece
           ? `font-weight: bold; background: ${background}; color: ${color}`

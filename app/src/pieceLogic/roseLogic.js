@@ -1,5 +1,5 @@
-import { isOpposite, sumArray } from "../utils";
-import { EMPTY_SQUARE } from "../constants";
+import { sumArray } from "../utils";
+import { PIECES } from "../constants";
 import get from "lodash.get";
 
 function roseLogic({ selectedPiece, selectedSquare, boardArray }, shiftArray) {
@@ -34,14 +34,13 @@ function roseLogic({ selectedPiece, selectedSquare, boardArray }, shiftArray) {
         break;
       } else {
         if (
-          get(boardArray, [currentSquare[0], currentSquare[1]]) === EMPTY_SQUARE
+          get(boardArray, [currentSquare[0], currentSquare[1], "piece"]) ===
+          PIECES.EMPTY
         ) {
           legalSquareArray.push([currentSquare[0], currentSquare[1]]);
         } else if (
-          isOpposite(
-            get(boardArray, [currentSquare[0], currentSquare[1]]),
-            selectedPiece.colour
-          )
+          get(boardArray, [currentSquare[0], currentSquare[1], "colour"]) !==
+          selectedPiece.colour
         ) {
           legalSquareArray.push([currentSquare[0], currentSquare[1], true]);
           break;

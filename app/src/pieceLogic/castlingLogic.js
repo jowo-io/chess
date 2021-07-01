@@ -1,5 +1,5 @@
 import get from "lodash.get";
-import { EMPTY_SQUARE } from "../constants";
+import { PIECES } from "../constants";
 
 function castlingLogic({ selectedSquare, boardArray, turn }) {
   let legalSquareArray = [];
@@ -25,7 +25,9 @@ function castlingLogic({ selectedSquare, boardArray, turn }) {
         }
 
         break;
-      } else if (get(boardArray, [selectedSquare[0], i]) !== EMPTY_SQUARE) {
+      } else if (
+        get(boardArray, [selectedSquare[0], i, "piece"]) !== PIECES.EMPTY
+      ) {
         break;
       }
     }

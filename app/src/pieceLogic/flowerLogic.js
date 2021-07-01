@@ -1,5 +1,5 @@
 import { checkIsTakeable } from "../utils";
-import { EMPTY_SQUARE } from "../constants";
+import { PIECES } from "../constants";
 import get from "lodash.get";
 
 function flowerLogic(
@@ -21,7 +21,10 @@ function flowerLogic(
         selectedPiece.colour
       )
     ) {
-      if (get(boardArray, [currentXCoords, currentYCoords]) === EMPTY_SQUARE) {
+      if (
+        get(boardArray, [currentXCoords, currentYCoords, "piece"]) ===
+        PIECES.EMPTY
+      ) {
         legalSquareArray.push([currentXCoords, currentYCoords, false]);
       } else {
         legalSquareArray.push([currentXCoords, currentYCoords, true]);

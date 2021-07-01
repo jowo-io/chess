@@ -1,6 +1,6 @@
 import { checkIsTakeable } from "../utils";
 import get from "lodash.get";
-import { EMPTY_SQUARE } from "../constants";
+import { PIECES } from "../constants";
 
 function lineLogic(
   { selectedPiece, selectedSquare, boardArray },
@@ -15,7 +15,7 @@ function lineLogic(
     x = x + horizontalCount, y = y + verticalCount
   ) {
     let currentPiece = get(boardArray, [y, x]);
-    if (currentPiece === EMPTY_SQUARE) {
+    if (currentPiece.piece === PIECES.EMPTY) {
       legalSquareArray.push([y, x, false]);
     } else if (checkIsTakeable(currentPiece, selectedPiece.colour)) {
       legalSquareArray.push([y, x, true]);
