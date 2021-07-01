@@ -43,26 +43,6 @@ function App() {
         checkSquareMatch(currentRow, currentColumn, value)
       )
     ) {
-      //update castling array
-      // setCastlingArray(
-      //   updateCastlingArray(
-      //     boardArray,
-      //     selectedSquare,
-      //     currentRow,
-      //     currentColumn,
-      //     castlingArray
-      //   )
-      // );
-      // //update enPassant array
-      // setEnPassantArray(
-      //   updateEnPassantArray(
-      //     boardArray,
-      //     selectedSquare,
-      //     currentRow,
-      //     currentColumn,
-      //     enPassantArray
-      //   )
-      // );
       setBoardArray(
         updateBoardArray(
           boardArray,
@@ -72,9 +52,7 @@ function App() {
           turn
         )
       );
-      //swap turn
       setTurn(changeTurn(turn));
-      //deselect square
       setSelectedSquare(null);
     }
   }

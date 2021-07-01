@@ -1,24 +1,40 @@
-function castlingLogic({ selectedSquare, boardArray, turn }, castlingArray) {
+import get from "lodash.get";
+import { EMPTY_SQUARE } from "../constants";
+
+function castlingLogic({ selectedSquare, boardArray, turn }) {
   let legalSquareArray = [];
-  // function countToRook(turnDirection) {
-  //   for (
-  //     let i = selectedSquare[1] + turnDirection;
-  //     -1 < i && i < boardArray.length;
-  //     i = i + turnDirection
-  //   ) {
-  //     if (castlingArray[selectedSquare[0]][i] === 2) {
-  //       console.log("castleable");
-  //       break;
-  //     } else if (boardArray[selectedSquare[0]][i] !== 0) {
-  //       break;
-  //     }
-  //   }
-  // }
-  //
-  // if (castlingArray[selectedSquare[0]][selectedSquare[1]] === 1) {
-  //   countToRook(1);
-  //   countToRook(-1);
-  // }
+  function countToRook(turnDirection) {
+    for (
+      let i = selectedSquare[1] + turnDirection;
+      -1 < i && i < boardArray.length;
+      i = i + turnDirection
+    ) {
+      if (get(boardArray, [selectedSquare[0], i, "isCastleable"])) {
+        //king moves to exact centre or centre plus one away from starting pos
+        console.log("castleable");
+        if (((selectedSquare[1] + i) / 2) % 1 === 0) {
+          legalSquareArray.push([
+            selectedSquare[0],
+            (selectedSquare[1] + i) / 2,
+          ]);
+        } else {
+          legalSquareArray.push([
+            selectedSquare[0],
+            Math.floor((selectedSquare[1] + i) / 2) + 1,
+          ]);
+        }
+
+        break;
+      } else if (get(boardArray, [selectedSquare[0], i]) !== EMPTY_SQUARE) {
+        break;
+      }
+    }
+  }
+  console.log(get(boardArray, [selectedSquare[0], selectedSquare[1]]));
+  if (get(boardArray, [selectedSquare[0], selectedSquare[1]], "isCastleable")) {
+    countToRook(1);
+    countToRook(-1);
+  }
 
   return legalSquareArray;
 }

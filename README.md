@@ -20,7 +20,7 @@ Dan:
 - domain name
 - rename column to square
 - add on board funtion (within range board length -<1)
-
+- dynamic? board size
 - add auto generating letter/number square names
 
 Jo:

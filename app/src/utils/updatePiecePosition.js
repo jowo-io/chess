@@ -13,7 +13,7 @@ function updatePiecePosition({
 }) {
   set(newBoardArray, [selectedSquare[0], selectedSquare[1]], EMPTY_SQUARE);
   set(newBoardArray, [currentRow, currentColumn], movedPiece);
-  //need execption for enPassant
+  //check and movement for enPassant
   if (movedPiece.piece === PIECES.PAWN) {
     for (
       let i = currentRow;
@@ -25,6 +25,38 @@ function updatePiecePosition({
         checkIsTakeable(newBoardArray[i][currentColumn], turn)
       ) {
         newBoardArray[i][currentColumn] = EMPTY_SQUARE;
+      }
+    }
+  }
+  //check and movement for castling
+  if (
+    movedPiece.piece === PIECES.KING &&
+    Math.abs(selectedSquare[1] - currentColumn) > 1
+  ) {
+    if (selectedSquare[1] - currentColumn < 1) {
+      for (let i = currentColumn; i < newBoardArray.length; i++) {
+        if (get(newBoardArray, [selectedSquare[0], i]).piece === PIECES.ROOK) {
+          set(
+            newBoardArray,
+            [selectedSquare[0], currentColumn - 1],
+            get(newBoardArray, [selectedSquare[0], i])
+          );
+          set(newBoardArray, [selectedSquare[0], i], EMPTY_SQUARE);
+          break;
+        }
+      }
+    }
+    if (selectedSquare[1] - currentColumn > 1) {
+      for (let i = currentColumn; i > -1; i--) {
+        if (get(newBoardArray, [selectedSquare[0], i]).piece === PIECES.ROOK) {
+          set(
+            newBoardArray,
+            [selectedSquare[0], currentColumn + 1],
+            get(newBoardArray, [selectedSquare[0], i])
+          );
+          set(newBoardArray, [selectedSquare[0], i], EMPTY_SQUARE);
+          break;
+        }
       }
     }
   }
