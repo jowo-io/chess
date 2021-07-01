@@ -15,7 +15,7 @@ Dan:
 - pawns can jump with first move for some reason /
 - add castling ?
 - board colouring should always start white
-- think about check
+- think about check (can currently castle through check )
 - think about promotions
 - domain name
 - rename column to square

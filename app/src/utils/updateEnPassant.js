@@ -2,14 +2,10 @@ import get from "lodash.get";
 import set from "lodash.set";
 import { PAWN_STATES } from "../constants";
 
-function updateEnPassant({
+function updateEnPassant(
   newBoardArray,
-  selectedSquare,
-  currentRow,
-  currentColumn,
-  turn,
-  movedPiece,
-}) {
+  { selectedSquare, currentRow, currentColumn, turn, movedPiece }
+) {
   for (let i = 0; i < newBoardArray.length; i++) {
     for (let j = 0; j < newBoardArray.length; j++) {
       if (

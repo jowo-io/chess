@@ -3,14 +3,10 @@ import set from "lodash.set";
 import { EMPTY_SQUARE, PIECES, PAWN_DIRECTION } from "../constants";
 import { checkIsTakeable } from "../utils";
 
-function updatePiecePosition({
+function updatePiecePosition(
   newBoardArray,
-  selectedSquare,
-  currentRow,
-  currentColumn,
-  turn,
-  movedPiece,
-}) {
+  { selectedSquare, currentRow, currentColumn, turn, movedPiece }
+) {
   set(newBoardArray, [selectedSquare[0], selectedSquare[1]], EMPTY_SQUARE);
   set(newBoardArray, [currentRow, currentColumn], movedPiece);
   //check and movement for enPassant

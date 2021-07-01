@@ -42,34 +42,34 @@ function pawnLogic({ selectedPiece, selectedSquare, boardArray }) {
     }
   }
   // check if enPassant possible doesn't work atm
-  if (selectedSquare[0] < boardArray.length - 3 && selectedSquare[0] > 2) {
-    for (
-      let j = selectedSquare[0];
-      j < boardArray.length && j > -1;
-      j = j + turnDirection
-    ) {
-      if (
-        get(boardArray, [j, selectedSquare[1] - 1]) === PAWN_STATES.JUST_LEAPED
-      ) {
-        legalSquareArray.push([
-          selectedSquare[0] - turnDirection,
-          selectedSquare[1] - 1,
-          true,
-        ]);
-        break;
-      }
-      if (
-        get(boardArray, [j, selectedSquare[1] + 1]) === PAWN_STATES.JUST_LEAPED
-      ) {
-        legalSquareArray.push([
-          selectedSquare[0] - turnDirection,
-          selectedSquare[1] + 1,
-          true,
-        ]);
-        break;
-      }
-    }
-  }
+  // if (selectedSquare[0] < boardArray.length - 3 && selectedSquare[0] > 2) {
+  //   for (
+  //     let j = selectedSquare[0];
+  //     j < boardArray.length && j > -1;
+  //     j = j + turnDirection
+  //   ) {
+  //     if (
+  //       get(boardArray, [j, selectedSquare[1] - 1]) === PAWN_STATES.JUST_LEAPED
+  //     ) {
+  //       legalSquareArray.push([
+  //         selectedSquare[0] - turnDirection,
+  //         selectedSquare[1] - 1,
+  //         true,
+  //       ]);
+  //       break;
+  //     }
+  //     if (
+  //       get(boardArray, [j, selectedSquare[1] + 1]) === PAWN_STATES.JUST_LEAPED
+  //     ) {
+  //       legalSquareArray.push([
+  //         selectedSquare[0] - turnDirection,
+  //         selectedSquare[1] + 1,
+  //         true,
+  //       ]);
+  //       break;
+  //     }
+  //   }
+  // }
   //check if take diagnol
   if (
     get(boardArray, [

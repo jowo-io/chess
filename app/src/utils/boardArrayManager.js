@@ -52,16 +52,16 @@ export function updateBoardArray(
   let newBoardArray = cloneDeep(boardArray);
   const movedPiece = get(newBoardArray, [selectedSquare[0], selectedSquare[1]]);
   const args = {
-    newBoardArray,
     selectedSquare,
     currentRow,
     currentColumn,
     turn,
     movedPiece,
   };
-  newBoardArray = updateEnPassant(args);
-  newBoardArray = updateCastling(args);
-  newBoardArray = updatePiecePosition(args);
+  newBoardArray = updatePiecePosition(
+    updateCastling(updateEnPassant(newBoardArray, args), args),
+    args
+  );
   logBoard(newBoardArray);
   console.log(newBoardArray);
   return newBoardArray;

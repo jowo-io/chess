@@ -3,14 +3,10 @@ import { PIECES } from "../constants";
 import get from "lodash.get";
 import set from "lodash.set";
 
-function updateCastling({
+function updateCastling(
   newBoardArray,
-  selectedSquare,
-  currentRow,
-  currentColumn,
-  turn,
-  movedPiece,
-}) {
+  { selectedSquare, currentRow, currentColumn, turn, movedPiece }
+) {
   console.log(movedPiece);
   if (movedPiece.piece === PIECES.KING) {
     for (let i = 0; i < newBoardArray.length; i++) {
