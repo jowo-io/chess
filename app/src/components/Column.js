@@ -1,5 +1,5 @@
 import pieceImages from "../constants/pieceImages";
-import { checkSquareMatch, getSquareInfo } from "../utils";
+import { checkSquareMatch, getMoveStateBoolean } from "../utils";
 import movableHighlight from "../assets/movableHighlight.png";
 import takeableHighlight from "../assets/takeableHighlight.png";
 
@@ -10,17 +10,17 @@ function Column({
   selectedSquare,
   turn,
   boardArray,
-  legalSquareArray,
   onMouseMove,
   onMouseUp,
   onMouseDown,
 }) {
-  const { className, isTakeable, isLegal, isCheck, isSelected } = getSquareInfo(
-    selectedSquare,
-    legalSquareArray,
-    currentRow,
-    currentColumn
-  );
+  const {
+    className,
+    isTakeable,
+    isLegal,
+    isCheck,
+    isSelected,
+  } = getMoveStateBoolean(currentPiece);
 
   const currentSquareDragMatch =
     selectedSquare &&

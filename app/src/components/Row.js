@@ -7,7 +7,6 @@ function Row({
   selectedSquare,
   turn,
   boardArray,
-  legalSquareArray,
   onMouseMove,
   onMouseUp,
   onMouseDown,
@@ -23,7 +22,6 @@ function Row({
             selectedSquare={selectedSquare}
             turn={turn}
             boardArray={boardArray}
-            legalSquareArray={legalSquareArray}
             onMouseMove={onMouseMove}
             onMouseUp={onMouseUp}
             onMouseDown={onMouseDown}

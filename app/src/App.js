@@ -1,7 +1,16 @@
 import "./App.css";
 import { useState } from "react";
-import genLegalSquareArray from "./pieceLogic/genLegalSquares";
-import { changeTurn, checkSquareMatch, checkIsTakeable } from "./utils";
+import set from "lodash.set";
+import cloneDeep from "lodash.clonedeep";
+import get from "lodash.get";
+import omit from "lodash.omit";
+import updateBoardMoves from "./pieceLogic/genLegalSquares";
+import {
+  changeTurn,
+  checkSquareMatch,
+  checkIsTakeable,
+  getMoveStateBoolean,
+} from "./utils";
 import MovingPiece from "./components/MovingPiece";
 import Board from "./components/Board";
 import { genBoardArray, updateBoardArray } from "./utils/boardArrayManager";
@@ -15,37 +24,43 @@ let fenCode =
 let mouseCurrentX = null;
 let mouseCurrentY = null;
 
+function clearBoardMoves(boardArray) {
+  return cloneDeep(boardArray).map((row) =>
+    row.map((square) => omit(square, ["moveState"]))
+  );
+}
+
 function App() {
   const [mousePos, setMousePos] = useState([0, 0]);
   const [turn, setTurn] = useState(COLOURS.WHITE);
   const [selectedSquare, setSelectedSquare] = useState(null);
   const [isMouseDown, setIsMouseDown] = useState(false);
-  const [legalSquareArray, setLegalSquareArray] = useState([]);
   const [boardArray, setBoardArray] = useState(genBoardArray(fenCode));
   function clickSquare(
     { currentPiece, currentRow, currentColumn },
     wasMouseDown
   ) {
+    const isLegal = getMoveStateBoolean(
+      get(boardArray, [currentRow, currentColumn])
+    ).isLegal;
+    console.log("2", isLegal);
     if (
       selectedSquare &&
       checkSquareMatch(currentRow, currentColumn, selectedSquare) &&
       wasMouseDown
     ) {
+      setBoardArray(clearBoardMoves(boardArray)); 
       setSelectedSquare(null);
-    } else if (wasMouseDown && !checkIsTakeable(currentPiece, turn)) {
+    } else if (wasMouseDown && !checkIsTakeable(currentPiece, turn)) { 
       setSelectedSquare([currentRow, currentColumn]);
-      setLegalSquareArray(
-        genLegalSquareArray([currentRow, currentColumn], boardArray, turn)
+      setBoardArray(
+        updateBoardMoves([currentRow, currentColumn], clearBoardMoves(boardArray), turn)
       );
-    } else if (
-      selectedSquare &&
-      legalSquareArray.find((value) =>
-        checkSquareMatch(currentRow, currentColumn, value)
-      )
-    ) {
+      
+    } else if (selectedSquare && isLegal) {
       setBoardArray(
         updateBoardArray(
-          boardArray,
+          clearBoardMoves(boardArray),
           selectedSquare,
           currentRow,
           currentColumn,
@@ -83,7 +98,6 @@ function App() {
           boardArray={boardArray}
           selectedSquare={selectedSquare}
           turn={turn}
-          legalSquareArray={legalSquareArray}
           onMouseMove={({ clientX, clientY }) => {
             mouseCurrentX = clientX;
             mouseCurrentY = clientY;

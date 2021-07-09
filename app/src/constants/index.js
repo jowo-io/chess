@@ -41,7 +41,6 @@ export const PIECES = {
   CHANCELLOR: "CHANCELLOR",
   ROSE: "ROSE",
 };
-export const EMPTY_ = 0;
 
 export const COLOURS = {
   BLACK: "BLACK",
@@ -57,6 +56,20 @@ export const PAWN_STATES = {
 export const PAWN_DIRECTION = {
   [COLOURS.WHITE]: 1,
   [COLOURS.BLACK]: -1,
+};
+
+export const MOVE_STATES = {
+  //none moves
+  NONE: "NONE",
+  SELECTED: "SELECTED",
+  IN_CHECK: "IN_CHECK",
+  //empty moves
+  LEGAL_EMPTY: "LEGAL_EMPTY",
+  LEGAL_CASTLE: "LEGAL_CASTLE",
+  LEGAL_PROMOTION: "LEGAL_PROMOTION",
+  //taking moves
+  LEGAL_TAKING: "LEGAL_TAKING",
+  LEGAL_EN_PASSANT: "LEGAL_EN_PASSANT",
 };
 
 export const fenInitialStateMap = {

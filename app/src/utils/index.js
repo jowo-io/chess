@@ -1,4 +1,5 @@
-import { COLOURS, PIECES } from "../constants";
+import { COLOURS, PIECES, MOVE_STATES } from "../constants";
+import get from "lodash.get";
 
 export function checkSquareMatch(row, col, square) {
   if (row === square[0] && col === square[1]) {
@@ -29,11 +30,13 @@ export function checkSquareMatchTemp(row, col, square) {
 }
 
 export function checkIsTakeable(currentPiece, turn) {
-  return (
-    currentPiece.piece === PIECES.EMPTY ||
-    (currentPiece.colour === COLOURS.WHITE && turn === COLOURS.BLACK) ||
-    (currentPiece.colour === COLOURS.BLACK && turn === COLOURS.WHITE)
-  );
+  if (currentPiece) {
+    return (
+      currentPiece.piece === PIECES.EMPTY ||
+      (currentPiece.colour === COLOURS.WHITE && turn === COLOURS.BLACK) ||
+      (currentPiece.colour === COLOURS.BLACK && turn === COLOURS.WHITE)
+    );
+  }
 }
 
 export function turnToTurnDirection(turn) {
@@ -52,45 +55,40 @@ export function changeTurn(turn) {
   }
 }
 
-export function getSquareInfo(
-  selectedSquare,
-  legalSquareArray,
-  currentRow,
-  currentColumn
-) {
+export function getMoveStateBoolean(selectedSquare) {
   let className = "";
   let isTakeable = false;
   let isLegal = false;
   let isCheck = false;
   let isSelected = false;
-
-  if (selectedSquare !== null) {
-    if (
-      legalSquareArray.find((value) =>
-        checkSquareMatch(currentRow, currentColumn, value)
-      )
-    ) {
-      if (
-        legalSquareArray.find((value) =>
-          checkSquareMatchTemp(currentRow, currentColumn, value)
-        )
-      ) {
-        isTakeable = true;
-      } else {
-        isLegal = true;
-      }
+  switch (get(selectedSquare, "moveState")) {
+    case MOVE_STATES.NONE: {
+      // nothing
+      break;
     }
-    if (checkSquareMatch(currentRow, currentColumn, selectedSquare)) {
-      className = "selectedSquare";
+    case MOVE_STATES.SELECTED: {
       isSelected = true;
+      break;
+    }
+    case MOVE_STATES.IN_CHECK: {
+      // for now do nothing
+      break;
+    }
+    case MOVE_STATES.LEGAL_EMPTY:
+    case MOVE_STATES.LEGAL_CASTLE:
+    case MOVE_STATES.LEGAL_PROMOTION: {
+      isLegal = true;
+      break;
+    }
+    case MOVE_STATES.LEGAL_TAKING:
+    case MOVE_STATES.LEGAL_EN_PASSANT: {
+      isLegal = true;
+      break;
+    }
+    default: {
+      // do nada
+      break;
     }
   }
-
-  return {
-    className,
-    isTakeable,
-    isLegal,
-    isCheck,
-    isSelected,
-  };
+  return { className, isTakeable, isLegal, isCheck, isSelected };
 }

@@ -1,6 +1,6 @@
 import get from "lodash.get";
 import set from "lodash.set";
-import { PIECES, PAWN_DIRECTION } from "../constants";
+import { PIECES, PAWN_DIRECTION, MOVE_STATES } from "../constants";
 import { checkIsTakeable } from "../utils";
 
 function updatePiecePosition(
@@ -27,10 +27,7 @@ function updatePiecePosition(
     }
   }
   //check and movement for castling
-  if (
-    movedPiece.piece === PIECES.KING &&
-    Math.abs(selectedSquare[1] - currentColumn) > 1
-  ) {
+  if (movedPiece.MOVE_STATES === MOVE_STATES.LEGAL_CASTLE) {
     if (selectedSquare[1] - currentColumn < 1) {
       for (let i = currentColumn; i < newBoardArray.length; i++) {
         if (get(newBoardArray, [selectedSquare[0], i]).piece === PIECES.ROOK) {

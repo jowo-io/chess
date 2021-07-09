@@ -1,8 +1,12 @@
 import { sumArray } from "../utils";
-import { PIECES } from "../constants";
+import { PIECES, MOVE_STATES } from "../constants";
 import get from "lodash.get";
+import set from "lodash.set";
 
-function roseLogic({ selectedPiece, selectedSquare, boardArray }, shiftArray) {
+function roseLogic(
+  { selectedPiece, selectedSquare, newBoardArray },
+  shiftArray
+) {
   const permutationArray = [
     [1, 1, true],
     [1, -1, true],
@@ -13,7 +17,6 @@ function roseLogic({ selectedPiece, selectedSquare, boardArray }, shiftArray) {
     [-1, 1, false],
     [-1, -1, false],
   ];
-  let legalSquareArray = [];
   let currentSquare = selectedSquare;
   for (let j = 0; j < permutationArray.length; j++) {
     currentSquare = selectedSquare;
@@ -27,22 +30,30 @@ function roseLogic({ selectedPiece, selectedSquare, boardArray }, shiftArray) {
       );
       if (
         currentSquare[0] < 0 ||
-        currentSquare[0] > boardArray.length - 1 ||
+        currentSquare[0] > newBoardArray.length - 1 ||
         currentSquare[1] < 0 ||
-        currentSquare[1] > boardArray.length - 1
+        currentSquare[1] > newBoardArray.length - 1
       ) {
         break;
       } else {
         if (
-          get(boardArray, [currentSquare[0], currentSquare[1], "piece"]) ===
+          get(newBoardArray, [currentSquare[0], currentSquare[1], "piece"]) ===
           PIECES.EMPTY
         ) {
-          legalSquareArray.push([currentSquare[0], currentSquare[1]]);
+          set(
+            newBoardArray,
+            [currentSquare[0], currentSquare[1], "moveState"],
+            MOVE_STATES.LEGAL_EMPTY
+          );
         } else if (
-          get(boardArray, [currentSquare[0], currentSquare[1], "colour"]) !==
+          get(newBoardArray, [currentSquare[0], currentSquare[1], "colour"]) !==
           selectedPiece.colour
         ) {
-          legalSquareArray.push([currentSquare[0], currentSquare[1], true]);
+          set(
+            newBoardArray,
+            [currentSquare[0], currentSquare[1], "moveState"],
+            MOVE_STATES.LEGAL_TAKING
+          );
           break;
         } else {
           break;
@@ -50,8 +61,6 @@ function roseLogic({ selectedPiece, selectedSquare, boardArray }, shiftArray) {
       }
     }
   }
-
-  return legalSquareArray;
 }
 
 export default roseLogic;

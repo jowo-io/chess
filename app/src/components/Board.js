@@ -5,7 +5,6 @@ function Board({
   currentPiece,
   selectedSquare,
   turn,
-  legalSquareArray,
   onMouseMove,
   onMouseUp,
   onMouseDown,
@@ -18,7 +17,6 @@ function Board({
         selectedSquare={selectedSquare}
         turn={turn}
         boardArray={boardArray}
-        legalSquareArray={legalSquareArray}
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUp}
         onMouseDown={onMouseDown}
